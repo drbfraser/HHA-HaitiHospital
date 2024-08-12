@@ -71,7 +71,7 @@ const PieChart = ({ analyticsData, questionMap }: PieChartProps) => {
   return (
     <div className="d-flex flex-row justify-content-center w-100" style={{ height: '550px' }}>
       <Pie
-        options={createPieChartOptions(t('analyticsPieChart'), data)}
+        options={createPieChartOptions(t('analyticsPieChart'), data, analyticsData, questionMap)}
         data={data}
         style={{ width: '100%', height: '550px' }}
       />

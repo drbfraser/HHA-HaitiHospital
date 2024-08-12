@@ -1,5 +1,7 @@
 import { Chart, ChartEvent, Color, LegendElement, LegendItem, TooltipItem } from 'chart.js';
 import { Data } from './Pie';
+import { AnalyticsMap, QuestionMap } from 'pages/analytics/Analytics';
+import { prepareTimeLabel, translateChartLabel } from 'utils/analytics';
 
 export const createDefaultChartOptions = (chartTitle: string) => {
   return {
@@ -17,7 +19,12 @@ export const createDefaultChartOptions = (chartTitle: string) => {
   };
 };
 
-export const createPieChartOptions = (chartTitle: string, data: Data) => {
+export const createPieChartOptions = (
+  chartTitle: string,
+  data: Data,
+  analyticsData: AnalyticsMap,
+  questionMap: QuestionMap,
+) => {
   const options = {
     responsive: true,
     maintainAspectRatio: false,
@@ -49,9 +56,9 @@ export const createPieChartOptions = (chartTitle: string, data: Data) => {
               return chartData.backgroundColor;
             });
 
-            // array will look like [["Red", "Green"], ["Blue", "Green"]] so flatten it
-
-            datasetColors = datasetColors.flat();
+            // the dataset colors will end up looking like [["Red", "Green"], ["Blue", "Green"]],
+            //where, the first nested array contains color for the outer layer data set (time data: Feb 2024, May 2024)
+            //while, the second nested array contains color for the inner layer data set (aggregate data: Q1 - Beds Available)
 
             // there are two data sets:
             // - first: the time data set which is on the outer layer
@@ -59,18 +66,32 @@ export const createPieChartOptions = (chartTitle: string, data: Data) => {
             // all the labels are in the same list with no way to distinguish between data set
             // so we need to distinguish data set
 
-            labelsOriginal.forEach((label) => {
-              label.datasetIndex = 0;
+            let labelIndex = 0;
 
-              if (label.index! >= chart.data.datasets[0].data.length) {
-                label.datasetIndex = 1;
-              }
+            // used to track the background color for the outer layer data set
+            let timeBgColorIndex = 0;
 
-              //enable user to toggle dataset visibility on or off when user clicks on legend
+            // we wish to diplay legends in this order: aggregate data 1, time data 1, time data 2, aggregate data 2, time data 1, time data 2
+            //eg, Q1-Beds Available, Jan 2024, Feb 2024, Q2-Bed Days, Jan 2024, Feb 2024 ...
 
+            Object.keys(analyticsData).forEach((departmentQuestionKey, index) => {
+              const label = labelsOriginal[labelIndex];
+              label.datasetIndex = 1;
+              label.text = translateChartLabel(departmentQuestionKey, questionMap);
+              label.fillStyle = (datasetColors[1] as Color[])[index];
               label.hidden = !chart.isDatasetVisible(label.datasetIndex);
+              labelIndex++;
 
-              label.fillStyle = datasetColors[label.index!] as Color;
+              analyticsData[departmentQuestionKey].forEach((timeData) => {
+                const label = labelsOriginal[labelIndex];
+                label.datasetIndex = 0;
+                label.text = prepareTimeLabel(timeData);
+                label.fillStyle = (datasetColors[0] as Color[])[timeBgColorIndex];
+                label.hidden = !chart.isDatasetVisible(label.datasetIndex);
+
+                timeBgColorIndex++;
+                labelIndex++;
+              });
             });
 
             return labelsOriginal;

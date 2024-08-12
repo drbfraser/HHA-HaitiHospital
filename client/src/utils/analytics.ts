@@ -236,7 +236,7 @@ export const prepareAggregateLabels = (analyticsData: AnalyticsMap, questionMap:
   return Object.keys(analyticsData).map((label) => translateChartLabel(label, questionMap));
 };
 
-const prepareTimeLabelsHelper = (timeData: AnalyticsResponse) => {
+export const prepareTimeLabel = (timeData: AnalyticsResponse) => {
   const dateWithFormat = getDateForAnalytics(timeData);
   const formattedTime = formatDateForChart(dateWithFormat);
 
@@ -248,7 +248,7 @@ const prepareTimeLabelsHelper = (timeData: AnalyticsResponse) => {
 };
 
 export const prepareTimeLabels = (analyticsTimeData: AnalyticsResponse[]) => {
-  return analyticsTimeData.map((timeData) => prepareTimeLabelsHelper(timeData));
+  return analyticsTimeData.map((timeData) => prepareTimeLabel(timeData));
 };
 
 export const prepareTimeData = (analyticsData: AnalyticsMap) => {
