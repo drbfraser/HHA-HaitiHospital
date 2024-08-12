@@ -140,7 +140,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v3
         with:
-          name: mocha-test-report
+          name: mocha-test-result
           path: /isolated_build/repo/server/mochawesome-report
           retention-days: 7
       - uses: actions/upload-artifact@v3
