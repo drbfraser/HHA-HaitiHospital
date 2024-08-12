@@ -259,7 +259,7 @@ const ReportForm = ({
             readOnly={readOnly}
             tooltipText={submitTooltipText}
           />
-          <div className="position-sticky bottom-0 py-3">
+          <div className="position-sticky bottom-0 py-3" data-testid="report-save-as-draft-button">
             <input
               className="btn btn-secondary"
               name="save"

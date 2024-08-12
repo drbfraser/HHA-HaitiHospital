@@ -199,7 +199,11 @@ const ReportView = () => {
                 (user.userDetails.role === Role.HeadOfDepartment &&
                   user.userDetails.department.name === department)) &&
                 !editMonth && (
-                  <button className="btn btn-primary mr-3" onClick={editBtnHandler}>
+                  <button
+                    className="btn btn-primary mr-3"
+                    data-testid="edit-form-button"
+                    onClick={editBtnHandler}
+                  >
                     {readOnly
                       ? t('departmentReportDisplayEditForm')
                       : t('departmentReportDisplayViewForm')}
@@ -210,7 +214,11 @@ const ReportView = () => {
                 (user.userDetails.role === Role.HeadOfDepartment &&
                   user.userDetails.department.name === department)) &&
                 readOnly && (
-                  <button className="btn btn-primary mr-3" onClick={editMonthBtnHandler}>
+                  <button
+                    className="btn btn-primary mr-3"
+                    data-testid="edit-month-button"
+                    onClick={editMonthBtnHandler}
+                  >
                     {readOnly && !editMonth
                       ? t('departmentReportDisplayEditMonth')
                       : t('departmentReportDisplayViewForm')}
