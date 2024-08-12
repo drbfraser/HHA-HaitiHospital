@@ -34,6 +34,7 @@ type ChartTitleParams = {
 export const getChartTypeNames = () => ({
   bar: t('analyticsBarChart'),
   line: t('analyticsLineChart'),
+  pie: t('analyticsPieChart'),
 });
 
 export const findDepartmentIdByName = (departments: DepartmentJson[], departmentName: string) => {
