@@ -49,6 +49,8 @@ describe('General Report Page Tests', function () {
     });
 
     it('Should Successfully Update Report Form', function () {
+      generalReportPage.clickSearchReportTextField();
+      generalReportPage.typeSearchReportTextField('rehab');
       generalReportPage.clickEditReport();
       generalReportPage.clickEditFormButton();
       generalReportPage.clickUpdateButton();
