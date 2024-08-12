@@ -17,9 +17,8 @@ import {
   prepareAnalyticsQuery,
   getActiveQuestionsString,
   generateChartTitle,
-  chartTypeNames,
-  chartAggregationNames,
   constructExport,
+  getChartTypeNames,
 } from 'utils/analytics';
 import { Spinner } from 'components/spinner/Spinner';
 import ChartSelector, { ChartType } from 'components/charts/ChartSelector';
@@ -98,7 +97,7 @@ const Analytics = () => {
 
   const [selectedChart, setSelectedChart] = useLocalStorage<ChartType>('selectedChart', 'bar');
 
-  const [chartTitle, setChartTitle] = useLocalStorage<string>('chartTitle', 'Default text');
+  const [chartTitle, setChartTitle] = useLocalStorage<string>('chartTitle', '');
 
   const [hasUserChangedTitle, setHasUserChangedTitle] = useLocalStorage<boolean>(
     'hasUserChangedTitle',
@@ -124,7 +123,7 @@ const Analytics = () => {
     });
     setSelectedAggregateBy(MONTH_LITERAL);
     setSelectedChart('bar');
-    setChartTitle('Default text');
+    setChartTitle('');
     setHasUserChangedTitle(false);
     localStorage.clear();
   };
@@ -258,11 +257,11 @@ const Analytics = () => {
     if (hasUserChangedTitle) return;
     setChartTitle(
       generateChartTitle({
-        chartType: chartTypeNames[selectedChart],
+        chartType: getChartTypeNames()[selectedChart],
         questions: getActiveQuestionsString(questionMap),
         dateFrom: timeOptions.from,
         dateTo: timeOptions.to,
-        aggregateBy: chartAggregationNames[selectedAggregateBy],
+        aggregateBy: t(`${selectedAggregateBy}`),
       }),
     );
   };

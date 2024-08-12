@@ -26,15 +26,10 @@ type ChartTitleParams = {
   aggregateBy: string;
 };
 
-export const chartTypeNames = {
+export const getChartTypeNames = () => ({
   bar: t('analyticsBarChart'),
   line: t('analyticsLineChart'),
-};
-
-export const chartAggregationNames = {
-  month: t('month'),
-  year: t('year'),
-};
+});
 
 export const findDepartmentIdByName = (departments: DepartmentJson[], departmentName: string) => {
   return departments.find((department) => department.name === departmentName)?.id;
@@ -246,7 +241,8 @@ export const getActiveQuestionsString = (questionMap: QuestionMap): string => {
         .filter((question) => question.checked)
         .map((question) => {
           const questionText = i18n.language === 'en' ? question.en : question.fr;
-          return `[${key}] ${questionText}`;
+          const departmentName = t(`departments.${key}`);
+          return `[${departmentName}] ${questionText}`;
         }),
     )
     .flat()
@@ -297,13 +293,13 @@ export const constructExport = (
     // Add the logo image to the PDF
     pdf.addImage(logoImage, 'PNG', logoX, logoY, logoWidth, logoHeight);
     pdf.save(
-      `${timeOptions.from} - ${timeOptions.to} - ${chartTypeNames[selectedChart]} ${t('analyticsExportFilename')}.pdf`,
+      `${timeOptions.from} - ${timeOptions.to} - ${getChartTypeNames()[selectedChart]} ${t('analyticsExportFilename')}.pdf`,
     );
   };
   logoImage.onerror = function () {
     // if failing to load logo, save the pdf without it anyways
     pdf.save(
-      `${timeOptions.from} - ${timeOptions.to} - ${chartTypeNames[selectedChart]} ${t('analyticsExportFilename')}.pdf`,
+      `${timeOptions.from} - ${timeOptions.to} - ${getChartTypeNames()[selectedChart]} ${t('analyticsExportFilename')}.pdf`,
     );
   };
 };
