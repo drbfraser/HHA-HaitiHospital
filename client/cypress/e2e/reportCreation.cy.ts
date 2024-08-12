@@ -75,24 +75,27 @@ describe('Report Creation Tests', function () {
         expect(intercept.response?.body).to.have.property('message', 'Report saved');
       });
     });
-    // it('Should Submit a Report', function () {
-    //   cy.intercept('POST', `${serverUrl}/api/report`, (req) => {
-    //     expect(req.body.isDraft).to.equal(false);
-    //     expect(req.body.serializedReport.questionItems[0].answer).to.equal(2);
-    //     expect(req.body.serializedReport.questionItems[1].answer).to.equal(2);
-    //     req.reply({
-    //       statusCode: 201,
-    //       body: {
-    //         message: 'Report created successfully',
-    //       },
-    //     });
-    //   }).as('createReport');
-    //   reportCreationPage.typeFormField();
-    //   reportCreationPage.clickSubmitButton();
-    //   reportCreationPage.clickConfirmationModalConfirmButton();
-    //   cy.wait('@createReport').then((intercept: Interception) => {
-    //     expect(intercept.response?.statusCode).to.equal(201);
-    //   });
-    // });
+    // Skipping test for report creation because the process requires filling out all form inputs.
+    // Since the forms vary by department and are lengthy, automating this test would be complex and time-consuming.
+    // This test is skipped to focus on more critical and feasible test cases.
+    it.skip('Should Submit a Report', function () {
+      cy.intercept('POST', `${serverUrl}/api/report`, (req) => {
+        expect(req.body.isDraft).to.equal(false);
+        expect(req.body.serializedReport.questionItems[0].answer).to.equal(2);
+        expect(req.body.serializedReport.questionItems[1].answer).to.equal(2);
+        req.reply({
+          statusCode: 201,
+          body: {
+            message: 'Report created successfully',
+          },
+        });
+      }).as('createReport');
+      reportCreationPage.typeFormField();
+      reportCreationPage.clickSubmitButton();
+      reportCreationPage.clickConfirmationModalConfirmButton();
+      cy.wait('@createReport').then((intercept: Interception) => {
+        expect(intercept.response?.statusCode).to.equal(201);
+      });
+    });
   });
 });
