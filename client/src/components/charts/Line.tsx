@@ -44,7 +44,7 @@ const LineChart = ({ analyticsData, questionMap }: LineChartProps) => {
   };
   return (
     <div className="d-flex w-100 flex-row justify-content-center" style={{ height: '450px' }}>
-      <Line options={createDefaultChartOptions(t('analyticsLineChart'))} data={data} />
+      <Line options={createDefaultChartOptions()} data={data} />
     </div>
   );
 };
