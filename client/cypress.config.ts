@@ -43,6 +43,7 @@ export default defineConfig({
       json: true,
     },
   },
+  downloadsFolder: 'cypress/downloads',
   retries: {
     runMode: 2,
   },
