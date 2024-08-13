@@ -190,6 +190,13 @@ npm run test
 The initial run may take longer due to the in-memory MongoDB package installing some files before
 running, however subsequent tests will be faster as this installation only happens once.
 
+Running `npm coverage-report` in the server directory will generate an HTML report in a folder
+called `coverage` where you can easily view test coverage and see where tests are needed.
+
+After each test an HTML test report in the `mochawesome-report` folder will also be generated.
+
+Both of these reports are uploaded as an artifact as part of the CI/CD pipeline.
+
 ## Logging
 
 Log levels:
@@ -344,9 +351,10 @@ To do so:
 
 ## Accessing Cypress Test Results
 
-The Cypress test results are automatically uploaded as an artifact in each CI/CD run. You can access them by:
+The Cypress test results are automatically uploaded as an artifact in each CI/CD run. You can access
+them by:
 
-1. Navigating to the "Actions" tab 
+1. Navigating to the "Actions" tab
 2. Finding the relevant workflow run
 3. Going to the "Artifacts" section.
 4. Downloading "cypress-test-results" locally as an html file

@@ -1,19 +1,32 @@
 import http from 'http';
-import { Accounts, closeServer, dropMongo, seedMongo, setUpSession } from 'testTools/mochaHooks';
-import { MESSAGEBOARD_COMMENT_ENDPOINT, MESSAGEBOARD_ENDPOINT } from 'testTools/endPoints';
-import { Done } from 'mocha';
-import { HTTP_CREATED_CODE, HTTP_INTERNALERROR_CODE, HTTP_OK_CODE } from 'exceptions/httpException';
+import {
+  Accounts,
+  closeServer,
+  dropMongo,
+  INVALID_ID,
+  seedMongo,
+  setUpSession,
+  USER_ID,
+} from 'testTools/mochaHooks';
+import { MESSAGEBOARD_COMMENT_ENDPOINT } from 'testTools/endPoints';
+import { HTTP_BADREQUEST_CODE, HTTP_CREATED_CODE, HTTP_OK_CODE } from 'exceptions/httpException';
 import { MongoMemoryServer } from 'mongodb-memory-server';
-import { seedMessageBoard } from 'seeders/seed';
+import chai, { expect } from 'chai';
+import chaiHttp from 'chai-http';
+import MessageBoardComment from 'models/messageBoardComment';
+import { createMessage } from './messageboard.spec';
 
-const expect = require('chai').expect;
-const chai = require('chai');
-const chaiHttp = require('chai-http');
 chai.use(chaiHttp);
 
-let httpServer: http.Server;
-let agent: any;
-let csrf: string;
+async function createComment(userId = USER_ID.ADMIN, parentId: string, text = 'a comment here') {
+  const comment = new MessageBoardComment({
+    userId: userId,
+    messageComment: text,
+    parentMessageId: parentId,
+  });
+  await comment.save();
+  return comment.toJson();
+}
 
 interface MessageComment {
   parentMessageId: string;
@@ -22,6 +35,10 @@ interface MessageComment {
 
 describe('Message Board Comments Test', function () {
   let mongo: MongoMemoryServer;
+  let httpServer: http.Server;
+  let agent: any;
+  let csrf: string;
+
   before('Create a Working Server and Login With Admin', async function () {
     const session = await setUpSession(Accounts.AdminUser);
 
@@ -37,83 +54,65 @@ describe('Message Board Comments Test', function () {
 
   beforeEach('start with clean mongoDB', async function () {
     await seedMongo();
-    await seedMessageBoard();
   });
 
   afterEach('clean up test data', async () => {
     await dropMongo();
   });
 
-  it('Should Successfully Get Message Comments', function (done: Done) {
+  it('Should Successfully Get Message Comments', async function () {
+    const messageBoard = await createMessage();
+    const ignoreBoard = await createMessage();
+
+    const comment1 = await createComment(USER_ID.ADMIN, messageBoard.id);
+    const comment2 = await createComment(USER_ID.ADMIN, messageBoard.id);
+
+    await createComment(USER_ID.ADMIN, ignoreBoard.id);
+
     // Get a message first to get an ID
-    agent.get(MESSAGEBOARD_ENDPOINT).end(function (error: any, response: any) {
-      expect(error).to.be.null;
-      expect(response).to.have.status(HTTP_OK_CODE);
-      const messageId = response.body[0].id;
+    const res = await agent.get(`${MESSAGEBOARD_COMMENT_ENDPOINT}/${messageBoard.id}`);
 
-      agent.get(`${MESSAGEBOARD_COMMENT_ENDPOINT}/${messageId}`).end(function (
-        error: any,
-        response: any,
-      ) {
-        if (error) done(error);
-
-        expect(response).to.have.status(HTTP_OK_CODE);
-        done();
-      });
-    });
+    expect(res).to.have.status(HTTP_OK_CODE);
+    expect(res.body).to.have.lengthOf(2);
+    expect(res.body.some((comment: any) => comment.id == comment1.id)).to.be.true;
+    expect(res.body.some((comment: any) => comment.id == comment2.id)).to.be.true;
   });
 
-  it('Should Unsuccessfully Get Message Comments Due to Invalid Message Parent Id', function (done: Done) {
-    agent.get(`${MESSAGEBOARD_COMMENT_ENDPOINT}/${'Invalid'}`).end(function (
-      error: any,
-      response: any,
-    ) {
-      if (error) done(error);
-      expect(response).to.have.status(HTTP_INTERNALERROR_CODE);
-      done();
-    });
+  it('Should Unsuccessfully Get Message Comments Due to Invalid Message Parent Id', async function () {
+    const res = await agent.get(`${MESSAGEBOARD_COMMENT_ENDPOINT}/${INVALID_ID}`);
+
+    expect(res).to.have.status(HTTP_BADREQUEST_CODE);
   });
 
-  it('Should Successfully Post a Comment', function (done: Done) {
-    // Get a message first to get an ID
-    agent.get(MESSAGEBOARD_ENDPOINT).end(function (error: any, response: any) {
-      expect(error).to.be.null;
-      expect(response).to.have.status(HTTP_OK_CODE);
+  it('Should Successfully Post a Comment', async function () {
+    const messageBoard = await createMessage();
 
-      const messageId: string = response.body[0].id;
-      const messageComment: MessageComment = {
-        parentMessageId: messageId,
-        messageComment: 'Sample Test',
-      };
-
-      agent
-        .post(MESSAGEBOARD_COMMENT_ENDPOINT)
-        .set({ 'Content-Type': 'application/json', 'CSRF-Token': csrf })
-        .send(messageComment)
-        .end(function (error: any, response: any) {
-          if (error) done(error);
-          expect(error).to.be.null;
-          expect(response).to.have.status(HTTP_CREATED_CODE);
-          done();
-        });
-    });
-  });
-
-  it('Should Unsuccessfully Post a Comment Due To Invalid Parent Message Id', function (done: Done) {
+    const messageId: string = messageBoard.id;
     const messageComment: MessageComment = {
-      parentMessageId: 'Invalid Id',
+      parentMessageId: messageId,
       messageComment: 'Sample Test',
     };
 
-    agent
+    const res = await agent
       .post(MESSAGEBOARD_COMMENT_ENDPOINT)
       .set({ 'Content-Type': 'application/json', 'CSRF-Token': csrf })
-      .send(messageComment)
-      .end(function (error: any, response: any) {
-        if (error) done(error);
-        expect(error).to.be.null;
-        expect(response).to.have.status(HTTP_INTERNALERROR_CODE);
-        done();
-      });
+      .send(messageComment);
+
+    expect(res).to.have.status(HTTP_CREATED_CODE);
+    expect(await MessageBoardComment.findOne({ userId: USER_ID.ADMIN })).to.not.be.null;
+  });
+
+  it('Should Unsuccessfully Post a Comment Due To Invalid Parent Message Id', async function () {
+    const messageComment: MessageComment = {
+      parentMessageId: INVALID_ID,
+      messageComment: 'Sample Test',
+    };
+
+    const res = await agent
+      .post(MESSAGEBOARD_COMMENT_ENDPOINT)
+      .set({ 'Content-Type': 'application/json', 'CSRF-Token': csrf })
+      .send(messageComment);
+
+    expect(res).to.have.status(HTTP_BADREQUEST_CODE);
   });
 });

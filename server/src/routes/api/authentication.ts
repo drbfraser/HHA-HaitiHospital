@@ -1,8 +1,6 @@
 import { NextFunction, Request, Response, Router } from 'express';
-
 import { HTTP_OK_CODE } from 'exceptions/httpException';
 import UserCollection from 'models/user';
-import { logger } from '../../logger';
 import requireJwtAuth from 'middleware/requireJwtAuth';
 import requireLocalAuth from '../../middleware/requireLocalAuth';
 
