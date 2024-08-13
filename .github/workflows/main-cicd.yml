@@ -68,6 +68,8 @@ jobs:
       - name: Spin up containers
         working-directory: /isolated_build/repo/
         run: |
+          set -x
+          echo $USER
           sudo usermod -a -G docker $USER
           newgrp docker
           docker compose -f docker-compose.ci.yml up
