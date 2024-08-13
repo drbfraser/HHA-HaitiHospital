@@ -24,3 +24,5 @@ yarn-error.log*
 
 # eslint cache
 .eslintcache
+
+cypress/screenshots
