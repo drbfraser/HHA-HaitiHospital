@@ -46,13 +46,22 @@ const CaseStudyInfo = ({
   return (
     <FormDisplay>
       <div className="w-100 pr-2 d-flex flex-column gap-4">
-        <FormFieldDisplay label={t('caseStudyViewAuthor')}>{author}</FormFieldDisplay>
-        <FormFieldDisplay label={t('caseStudyViewCreatedAt')}>
-          {toI18nDateString(caseStudy.createdAt, i18n.resolvedLanguage)}
-        </FormFieldDisplay>
-        {infoRows.map(({ label, ...props }, index) => (
-          <FormFieldDisplay key={index} {...props} label={t(label)} />
-        ))}
+        <div className="d-flex flex-column flex-md-row gap-4">
+          <div className="flex-grow-1">
+            <FormFieldDisplay label={t('caseStudyViewAuthor')}>{author}</FormFieldDisplay>
+            <FormFieldDisplay label={t('caseStudyViewCreatedAt')}>
+              {toI18nDateString(caseStudy.createdAt, i18n.resolvedLanguage)}
+            </FormFieldDisplay>
+            {infoRows.map(({ label, ...props }, index) => (
+              <FormFieldDisplay key={index} {...props} label={t(label)} />
+            ))}
+          </div>
+          {caseStudyImage && (
+            <div className="flex-shrink-1">
+              <ImageDisplay image={caseStudyImage} />
+            </div>
+          )}
+        </div>
         <FormFieldDisplay
           label={t('caseStudyFormCaseStudy/Story')}
           testid="case-study-patient-case-story"
@@ -60,7 +69,6 @@ const CaseStudyInfo = ({
           {caseStudyStory}
         </FormFieldDisplay>
       </div>
-      {caseStudyImage && <ImageDisplay image={caseStudyImage} />}
     </FormDisplay>
   );
 };

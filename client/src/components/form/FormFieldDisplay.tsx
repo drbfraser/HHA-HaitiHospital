@@ -7,7 +7,7 @@ export interface FormFieldDisplayProps {
 }
 
 export const FormFieldDisplay = ({ label, children, testid }: FormFieldDisplayProps) => (
-  <div className="d-flex flex-column gap-1 align-items-start" data-testid={testid}>
+  <div className="d-flex flex-column gap-1 align-items-start mb-3" data-testid={testid}>
     <small className="text-muted">{label}</small>
     {children}
   </div>

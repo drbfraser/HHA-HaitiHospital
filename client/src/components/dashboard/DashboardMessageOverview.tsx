@@ -12,6 +12,21 @@ const DashboardMessageOverview = () => {
   const [messages, setMessages] = useState<MessageJson[]>([]);
   const history: History = useHistory<History>();
   const { t, i18n } = useTranslation();
+  const [truncateLength, setTruncateLength] = useState(window.innerWidth / 15);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setTruncateLength(window.innerWidth / 15);
+    };
+
+    window.addEventListener('resize', handleResize);
+
+    handleResize();
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
 
   const fetchMessages = useCallback(async () => {
     const messages = await getAllMessageBoards(history);
@@ -43,19 +58,39 @@ const DashboardMessageOverview = () => {
                 if (index <= 2) {
                   return (
                     <tr key={index}>
-                      <th scope="row" className="text-secondary text-break">
+                      <th
+                        scope="row"
+                        className="text-secondary text-wrap"
+                        style={{
+                          overflow: 'hidden',
+                          textOverflow: 'ellipsis',
+                        }}
+                      >
                         {message.messageHeader}
                       </th>
-                      <td className="text-secondary">
+                      <td
+                        className="text-secondary text-wrap"
+                        style={{
+                          overflow: 'hidden',
+                          textOverflow: 'ellipsis',
+                        }}
+                      >
                         {!!message.user ? message.user.name : t('status.not_available')}
                       </td>
-                      <td className="text-secondary">
+                      <td
+                        className="text-secondary text-wrap"
+                        style={{
+                          overflow: 'hidden',
+                          textOverflow: 'ellipsis',
+                        }}
+                      >
                         {toI18nDateString(message.date, i18n.resolvedLanguage)}
                       </td>
+
                       <td className="text-secondary text-break">
-                        {/*show first 70 character of message only*/}
-                        {message.messageBody.length > 70
-                          ? message.messageBody.slice(0, 70) + '...'
+                        {/* show first 70 character of message only */}
+                        {message.messageBody.length > truncateLength
+                          ? message.messageBody.slice(0, Math.floor(truncateLength)) + '...'
                           : message.messageBody}
                       </td>
                     </tr>

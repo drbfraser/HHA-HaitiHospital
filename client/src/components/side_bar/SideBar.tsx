@@ -131,7 +131,11 @@ const Sidebar = ({
         <ul className="nav nav-pills flex-column mb-auto p-2">
           <SidebarItem
             testid="expand-sidebar"
-            onClick={() => setIsExpanded((isExpanded) => !isExpanded)}
+            onClick={() => {
+              if (window.innerWidth >= 768) {
+                setIsExpanded((isExpanded) => !isExpanded);
+              }
+            }}
           >
             <i
               className={`${iconMargins} ms-auto bi bi-chevron-bar-${
