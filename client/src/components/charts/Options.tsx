@@ -3,7 +3,7 @@ import { Data } from './Pie';
 import { AnalyticsMap, QuestionMap } from 'pages/analytics/Analytics';
 import { prepareTimeLabel, translateChartLabel } from 'utils/analytics';
 
-export const createDefaultChartOptions = (chartTitle: string) => {
+export const createDefaultChartOptions = () => {
   return {
     responsive: true,
     maintainAspectRatio: false,
@@ -12,8 +12,7 @@ export const createDefaultChartOptions = (chartTitle: string) => {
         position: 'top' as const,
       },
       title: {
-        display: true,
-        text: chartTitle,
+        display: false,
       },
     },
   };
