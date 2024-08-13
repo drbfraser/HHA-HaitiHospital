@@ -1,0 +1,44 @@
+version: '3.9'
+
+services:
+  test:
+    build: ./
+    environment:
+      MONGO_URI: mongodb://test_mongodb:27017/hhahaiti
+      JWT_SECRET: just_some_secret
+      # the following environment variables must be configured to install MongoMemoryServer on linux debian
+      MONGOMS_DOWNLOAD_DIR: /tmp/mongodb-binaries
+      MONGOMS_DOWNLOAD_URL: https://fastdl.mongodb.org/linux/mongodb-linux-x86_64-debian12-7.0.9.tgz
+      CORS: http://test:3000
+      IS_GITLAB_CI: 'true'
+
+    healthcheck:
+      test: ['CMD-SHELL', 'curl localhost:3000']
+      interval: 2m
+      timeout: 10s
+      retries: 5
+      start_period: 1m
+
+    ports:
+      - 3000:3000
+      - 8000:8000
+
+  test_mongodb:
+    image: mongo:5.0.14-focal
+    ports:
+      - 27017:27017
+
+  cypress:
+    image: 'cypress/included'
+    depends_on:
+      test:
+        condition: service_healthy
+
+    environment:
+      BASE_URL: http://test:3000
+      SERVER_URL: http://test:8000
+      HOME: /root
+
+    working_dir: /client
+    volumes:
+      - ./client/:/client
