@@ -70,7 +70,7 @@ jobs:
         run: |
           set -x
           echo $USER
-          sudo usermod -a -G docker $USER
+          sudo usermod -a -G docker ${{github.actor}}
           newgrp docker
           docker compose -f docker-compose.ci.yml up
 
