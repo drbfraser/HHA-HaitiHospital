@@ -47,5 +47,4 @@ export default defineConfig({
   retries: {
     runMode: 2,
   },
-  downloadsFolder: 'cypress/downloads',
 });
