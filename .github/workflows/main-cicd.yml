@@ -58,7 +58,7 @@ jobs:
   test-ci:
     runs-on: [self-hosted, docker]
     container:
-      image: node:18
+      image: ubuntu-latest
     timeout-minutes: 60
     steps:
       - name: Checkout code into container
