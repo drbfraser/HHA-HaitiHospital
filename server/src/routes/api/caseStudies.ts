@@ -76,7 +76,7 @@ router.post(
         otherStory,
       } = JSON.parse(req.body.document);
       const user = req.user;
-      const userId = user._id || '-1';
+      const userId = user._id;
       const userDepartment = user.departmentId;
       let imgPath: string = '';
       if (req.file) {

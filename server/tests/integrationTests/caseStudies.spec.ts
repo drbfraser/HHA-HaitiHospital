@@ -106,6 +106,12 @@ describe('Case Study Tests', function () {
     expect(res.body.featured!).to.be.equal(true);
   });
 
+  it('Should return no content code if no case study is featured', async function () {
+    const res = await agent.get(CASE_STUDIES_FEATURED_ENDPOINT);
+
+    expect(res).to.have.status(HTTP_NOCONTENT_CODE);
+  });
+
   it('Should get all Case Studies, returning the featured one first', async function () {
     await createEmptyCaseStudy();
     const featureId = await createEmptyCaseStudy(true);
@@ -134,6 +140,15 @@ describe('Case Study Tests', function () {
     agent.get(`${CASE_STUDIES_ENDPOINT}/${'Invalid'}`).end(function (error: any, response: any) {
       if (error) done(error);
       expect(response).to.have.status(HTTP_INTERNALERROR_CODE);
+      done();
+    });
+  });
+
+  it('Should return a NOT_FOUND error when the id is for a case study that does not exist', function (done: Done) {
+    const invalidId = '76687ef1366f942478fa3d80';
+    agent.get(`${CASE_STUDIES_ENDPOINT}/${invalidId}`).end(function (error: any, response: any) {
+      if (error) done(error);
+      expect(response).to.have.status(HTTP_NOTFOUND_CODE);
       done();
     });
   });

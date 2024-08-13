@@ -26,7 +26,7 @@ const TotalCard = ({ department, questionId, value, questionMap }: TotalCardProp
           <h6 className="text-secondary">{formatQuestion(questionPrompt, i18n.language)}</h6>
         </Card.Text>
         <Card.Text>
-          <h3>{value}</h3>
+          <h5>{value}</h5>
         </Card.Text>
       </Card.Body>
     </Card>

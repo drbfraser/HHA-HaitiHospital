@@ -12,7 +12,8 @@ import UserCollection, { UserWithInstanceMethods } from 'models/user';
 import DepartmentCollection from 'models/departments';
 import chai from 'chai';
 import chaiHttp from 'chai-http';
-import { tr } from '@faker-js/faker';
+
+chai.use(chaiHttp);
 
 export const DEP_ID = {
   GENERAL: '666e07bb81f0646fc4c87c9f',
@@ -30,11 +31,12 @@ export const USER_ID = {
   MED_DIR: '666e07bb81f0646fc4c87cb1',
 };
 
-chai.use(chaiHttp);
 export interface UserAccount {
   username: string;
   password: string;
 }
+
+export const INVALID_ID = '000000000000000000000000';
 
 const AdminUser: UserAccount = {
   username: 'user0',

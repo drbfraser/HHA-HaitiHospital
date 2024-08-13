@@ -19,9 +19,6 @@ import { checkUserHasMessageAdminLevelAuth } from 'utils/authUtils';
 
 router.get('/', requireJwtAuth, async (req: Request, res: Response, next: NextFunction) => {
   try {
-    if (!req.user) {
-      throw new NotFound('User not logged in');
-    }
     let docs;
     if (req.user.role == Role.User) {
       const userDeptId = req.user.departmentId;
@@ -46,9 +43,6 @@ router.get(
   requireJwtAuth,
   async (req: Request, res: Response, next: NextFunction) => {
     try {
-      if (!req.user) {
-        throw new NotFound('User not logged in');
-      }
       const deptId = req.params.departmentId;
       if (!(await Departments.Database.validateDeptId(deptId))) {
         throw new BadRequest(`Invalid department id: ${deptId}`);
@@ -73,9 +67,6 @@ router.get(
 
 router.get('/:id', requireJwtAuth, async (req: Request, res: Response, next: NextFunction) => {
   try {
-    if (!req.user) {
-      throw new NotFound('User not logged in');
-    }
     const msgId = req.params.id;
     const doc = await MessageCollection.findById(msgId);
     if (!doc) {
@@ -104,9 +95,6 @@ router.post(
   validateInput,
   async (req: Request, res: Response, next: NextFunction) => {
     try {
-      if (!req.user) {
-        throw new NotFound('User not logged in');
-      }
       const departmentId: string = req.body.department.id;
       if (!(await Departments.Database.validateDeptId(departmentId))) {
         throw new BadRequest(`Invalid department id ${departmentId}`);
@@ -201,9 +189,6 @@ router.delete(
   roleAuth(Role.Admin, Role.MedicalDirector, Role.HeadOfDepartment),
   async (req: Request, res: Response, next: NextFunction) => {
     try {
-      if (!req.user) {
-        throw new NotFound('User not logged in');
-      }
       const msgId: string = req.params.id;
       const msg = await MessageCollection.findByIdAndRemove(msgId);
       if (!msg) {
