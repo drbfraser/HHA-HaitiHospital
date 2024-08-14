@@ -68,6 +68,7 @@ jobs:
 
       - name: Spin up containers
         run: |
+          chmod -R 757 .
           docker compose -f docker-compose.ci.yml up --build
 
   # ----------------------------------------------------------------------------
