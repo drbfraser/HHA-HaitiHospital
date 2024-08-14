@@ -29,6 +29,8 @@ services:
     image: mongo:5.0.14-focal
     ports:
       - 27017:27017
+    logging:
+      driver: none
 
   cypress:
     image: 'cypress/included'
@@ -40,6 +42,8 @@ services:
       BASE_URL: http://test:3000
       SERVER_URL: http://test:8000
       HOME: /root
+
+    entrypoint: /bin/bash -c "npm ci && npx cypress run"
 
     working_dir: /client
     volumes:
