@@ -69,7 +69,7 @@ jobs:
       - name: Spin up containers
         working-directory: ${{github.workspace}}/${{github.job}}
         run: |
-          docker compose -f docker-compose.ci.yml up --build
+          docker-compose -f docker-compose.ci.yml up --build --abort-on-container-exit
 
   # ----------------------------------------------------------------------------
   # Publish to DockerHub
