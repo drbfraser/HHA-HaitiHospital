@@ -56,7 +56,7 @@ jobs:
           npm run check-format
 
   test-ci:
-    runs-on: [self-hosted]
+    runs-on: [self-hosted, docker]
     # container:
     #   image: myoung34/github-runner:latest
     timeout-minutes: 60
