@@ -69,7 +69,6 @@ jobs:
       - name: Spin up containers
         working-directory: ${{github.workspace}}/${{github.job}}
         run: |
-          docker rm -v -f $(docker ps -qa)
           docker compose -f docker-compose.ci.yml up --build --abort-on-container-exit
 
       - name: Tear down containers
