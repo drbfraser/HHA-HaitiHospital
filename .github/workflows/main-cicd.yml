@@ -56,9 +56,9 @@ jobs:
           npm run check-format
 
   test-ci:
-    runs-on: [self-hosted, docker]
-    container:
-      image: myoung34/github-runner:latest
+    runs-on: [self-hosted]
+    # container:
+    #   image: myoung34/github-runner:latest
     timeout-minutes: 60
     steps:
       - name: Checkout code into container
@@ -68,9 +68,6 @@ jobs:
       - name: Spin up containers
         working-directory: /isolated_build/repo/
         run: |
-          whoami
-          sudo usermod -a -G docker $(whoami)
-          newgrp docker
           docker compose -f docker-compose.ci.yml up
 
   # ----------------------------------------------------------------------------
