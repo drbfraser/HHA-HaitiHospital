@@ -68,10 +68,8 @@ jobs:
       - name: Spin up containers
         working-directory: /isolated_build/repo/
         run: |
-          set -x
-          echo $USER
-          sudo usermod -a -G docker ${{github.actor}}
-          newgrp docker
+          sudo ./svc.sh stop
+          sudo ./svc.sh start
           docker compose -f docker-compose.ci.yml up
 
   # ----------------------------------------------------------------------------
