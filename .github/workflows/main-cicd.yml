@@ -61,8 +61,12 @@ jobs:
     #   image: myoung34/github-runner:latest
     timeout-minutes: 60
     steps:
+      - name: Root
+        run: |
+          sudo -s
+          whoami
       - name: Checkout code into container
-        uses: actions/checkout@v3.0.2
+        uses: actions/checkout@v3
         with:
           fetch-depth: 0
 
