@@ -1,7 +1,7 @@
 import { DropDown, DropDownMenus } from 'components/dropdown/DropdownMenu';
 import Layout from 'components/layout';
 import { ChangeEvent, useEffect, useRef, useState } from 'react';
-import { Button, Col } from 'react-bootstrap';
+import { Button, Col, Modal } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { getAllDepartments } from 'api/department';
 import { useHistory } from 'react-router-dom';
@@ -14,8 +14,11 @@ import {
   filterDepartmentsByReport,
   filterQuestionsSelected,
   findDepartmentIdByName,
-  getAllDepartmentsByName,
   prepareAnalyticsQuery,
+  getActiveQuestionsString,
+  generateChartTitle,
+  constructExport,
+  getChartTypeNames,
 } from 'utils/analytics';
 import { Spinner } from 'components/spinner/Spinner';
 import ChartSelector, { ChartType } from 'components/charts/ChartSelector';
@@ -45,41 +48,92 @@ export type AnalyticsMap = {
 };
 
 const Analytics = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
 
   const history = useHistory<History>();
 
   const [departments, setDepartments] = useState<DepartmentJson[]>([]);
+
+  let defaultQuestionMap = {};
+
+  // indicates elements of analytics where the state should use the browser's storage rather than just "useState"
+  function useLocalStorage<T>(key: string, initialValue: T) {
+    const storedValue = localStorage.getItem(key);
+    const initial: T = storedValue ? JSON.parse(storedValue) : initialValue;
+
+    const [value, setValue] = useState<T>(initial);
+
+    useEffect(() => {
+      localStorage.setItem(key, JSON.stringify(value));
+    }, [value]);
+
+    return [value, setValue] as const;
+  }
 
   //state to keep track of ongoing API requests in fetching departments or questions
   //it controls the loading spinner
 
   const [isLoading, setIsLoading] = useState(true);
 
-  const [questionMap, setQuestionMap] = useState<QuestionMap>({});
+  // state to make sure that analytics are performed only after department list has been fully loaded
+  const [departmentsLoaded, setDepartmentsLoaded] = useState(false);
 
-  const [timeOptions, setTimeOptions] = useState<TimeOptions>({
+  // const [questionMap, setQuestionMap] = useState<QuestionMap>({});
+  const [questionMap, setQuestionMap] = useLocalStorage<QuestionMap>(
+    'questionMap',
+    defaultQuestionMap,
+  );
+
+  const [timeOptions, setTimeOptions] = useLocalStorage<TimeOptions>('timeOptions', {
     from: defaultFromDate(),
     to: defaultToDate(),
     timeStep: MONTH_LITERAL,
   });
 
-  const [selectedAggregateBy, setSelectedAggregateBy] = useState<MonthOrYearOption>(MONTH_LITERAL);
+  const [selectedAggregateBy, setSelectedAggregateBy] = useLocalStorage<MonthOrYearOption>(
+    'selectedAggregateBy',
+    MONTH_LITERAL,
+  );
 
-  const [selectedChart, setSelectedChart] = useState<ChartType>('bar');
+  const [selectedChart, setSelectedChart] = useLocalStorage<ChartType>('selectedChart', 'bar');
+
+  const [chartTitle, setChartTitle] = useLocalStorage<string>('chartTitle', '');
+
+  const [hasUserChangedTitle, setHasUserChangedTitle] = useLocalStorage<boolean>(
+    'hasUserChangedTitle',
+    false,
+  );
 
   const [showModalQuestions, setShowModalQuestions] = useState(false);
   const [showModalTimeOptions, setShowModalTimeOptions] = useState(false);
 
   const [analyticsMap, setAnalyticsMap] = useState<AnalyticsMap>({});
 
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [tempTitle, setTempTitle] = useState(chartTitle);
+
   const pdfRef = useRef<HTMLDivElement>(null);
+
+  const resetAnalysis = () => {
+    fetchDepartments();
+    setTimeOptions({
+      from: defaultFromDate(),
+      to: defaultToDate(),
+      timeStep: MONTH_LITERAL,
+    });
+    setSelectedAggregateBy(MONTH_LITERAL);
+    setSelectedChart('bar');
+    setChartTitle('');
+    setHasUserChangedTitle(false);
+    localStorage.clear();
+  };
 
   const fetchDepartments = async () => {
     const departments = await getAllDepartments(history);
     const departmentsWithReport = filterDepartmentsByReport(departments);
 
     setDepartments(departmentsWithReport);
+    setDepartmentsLoaded(true);
 
     // should show a pop up communicating that there is no department with report
     //As of current, this line of code is a technical debt and maybe changed in the future
@@ -91,7 +145,7 @@ const Analytics = () => {
 
   useEffect(() => {
     fetchDepartments();
-  }, [history]);
+  }, []);
 
   const fetchQuestionPrompts = async (
     departmentName: string,
@@ -120,6 +174,14 @@ const Analytics = () => {
   };
 
   const updateQuestionMap = async () => {
+    const storedQuestionMap = localStorage.getItem('questionMap');
+
+    if (storedQuestionMap) {
+      // parse the stored value and set it directly, instead of giving it a default state
+      setQuestionMap(JSON.parse(storedQuestionMap));
+      return;
+    }
+
     const fetchQuestionPromises: Promise<QuestionPromptUI[]>[] = [];
 
     departments.forEach((department, index) => {
@@ -134,6 +196,7 @@ const Analytics = () => {
     const allQuestionPromptsUI = await Promise.all(fetchQuestionPromises);
 
     const updatedQuestionMap: QuestionMap = {};
+    defaultQuestionMap = updateQuestionMap;
 
     allQuestionPromptsUI.forEach((questionPrompstUI, index) => {
       updatedQuestionMap[departments[index].name] = questionPrompstUI;
@@ -147,6 +210,9 @@ const Analytics = () => {
   }, [departments, history]);
 
   const fetchAnalytics = async () => {
+    // halt immediately if departments have not yet been loaded
+    if (!departmentsLoaded) return;
+
     // department name + question (question id - question text) is used as an identifier (key) for a question
     // this quarantees uniqueness of the same question in different department
     // this list keeps track of all the identifier for the questions to be used later in creating a map
@@ -187,9 +253,35 @@ const Analytics = () => {
     setIsLoading(false);
   };
 
+  const automaticUpdateChartTitle = () => {
+    if (hasUserChangedTitle) return;
+    setChartTitle(
+      generateChartTitle({
+        chartType: getChartTypeNames()[selectedChart],
+        questions: getActiveQuestionsString(questionMap),
+        dateFrom: timeOptions.from,
+        dateTo: timeOptions.to,
+        aggregateBy: t(`${selectedAggregateBy}`),
+      }),
+    );
+  };
+
   useEffect(() => {
     fetchAnalytics();
-  }, [questionMap, timeOptions, selectedAggregateBy, history]);
+  }, [departmentsLoaded, questionMap, timeOptions, selectedAggregateBy, history]);
+
+  useEffect(() => {
+    if (!hasUserChangedTitle) {
+      automaticUpdateChartTitle();
+    }
+  }, [
+    questionMap,
+    timeOptions,
+    selectedAggregateBy,
+    selectedChart,
+    i18n.language,
+    hasUserChangedTitle,
+  ]);
 
   const handleCloseQuestionsModal = () => setShowModalQuestions(false);
   const handleShowQuestionsModal = () => {
@@ -200,36 +292,16 @@ const Analytics = () => {
   const handleShowTimeOptionsModal = () => setShowModalTimeOptions(true);
 
   const handleExportWithComponent = () => {
-    console.log('starting export...');
+    console.log('Starting PDF export...');
     const capturedComponent = pdfRef.current;
-
-    const chartFilenames = {
-      bar: t('analyticsBarChart'),
-      line: t('analyticsLineChart'),
-    };
 
     if (!capturedComponent) {
       console.error("PDF reference is invalid or the component hasn't been rendered.");
-      console.log(pdfRef);
       return;
     }
 
-    html2canvas(capturedComponent!).then((canvas) => {
-      const imgData = canvas.toDataURL('image/png');
-      const pdf = new jsPDF('landscape', 'mm', 'a4', true);
-      const pdfWidth = pdf.internal.pageSize.getWidth();
-      const pdfHeight = pdf.internal.pageSize.getHeight();
-      const imgWidth = canvas.width;
-      const imgHeight = canvas.height;
-      // ratio is used to scale the image so that it fits into the more restrictive dimension, to avoid visual cutoff at the edges
-      const ratio = Math.min(pdfWidth / imgWidth, pdfHeight / imgHeight);
-      // find points to center image horizontally and vertically
-      const imgX = (pdfWidth - imgWidth * ratio) / 2;
-      const imgY = (pdfHeight - imgHeight * ratio) / 2;
-      pdf.addImage(imgData, 'PNG', imgX, imgY, imgWidth * ratio, imgHeight * ratio);
-      pdf.save(
-        `${timeOptions.from} - ${timeOptions.to} - ${chartFilenames[selectedChart]} ${t('analyticsExportFilename')}.pdf`,
-      );
+    html2canvas(capturedComponent!, { scale: window.devicePixelRatio }).then((canvas) => {
+      constructExport(canvas, timeOptions, selectedChart);
     });
     console.log('finished export!');
   };
@@ -276,6 +348,30 @@ const Analytics = () => {
     setSelectedChart(chart);
   };
 
+  const handleTitleClick = () => {
+    setTempTitle(chartTitle);
+    setIsModalOpen(true);
+  };
+
+  const handleTitleChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
+    setTempTitle(e.target.value);
+  };
+
+  const handleSave = () => {
+    setChartTitle(tempTitle);
+    setHasUserChangedTitle(true);
+    setIsModalOpen(false);
+  };
+
+  const handleReset = () => {
+    setHasUserChangedTitle(false);
+    setIsModalOpen(false);
+  };
+
+  const handleClose = () => {
+    setIsModalOpen(false);
+  };
+
   return (
     <Layout title={t('headerAnalytics')}>
       {isLoading ? (
@@ -286,6 +382,9 @@ const Analytics = () => {
             <div className="d-flex flex-row gap-3" data-testid="select-department-question-button">
               <Button variant="outline-dark" onClick={handleShowQuestionsModal}>
                 {t('analyticsQuestion')}
+              </Button>
+              <Button variant="outline-dark" onClick={handleTitleClick}>
+                {t('editChartTitle')}
               </Button>
 
               <AnalyticsQuestionModal
@@ -325,17 +424,56 @@ const Analytics = () => {
               />
             </div>
           </div>
+
           <Col className="mt-5">
-            <AnalyticsTotal analyticsData={analyticsMap} questionMap={questionMap} />
             <div ref={pdfRef}>
+              <AnalyticsTotal analyticsData={analyticsMap} questionMap={questionMap} />
+              <div
+                className="text-center fw-bold"
+                style={{ fontSize: '30px', wordWrap: 'break-word' }}
+              >
+                {chartTitle}
+              </div>
               <ChartSelector
                 type={selectedChart}
                 analyticsData={analyticsMap}
                 questionMap={questionMap}
               />
             </div>
+
+            <Modal show={isModalOpen} onHide={handleClose}>
+              <Modal.Header closeButton>
+                <Modal.Title>{t('editChartTitle')}</Modal.Title>
+              </Modal.Header>
+              <Modal.Body>
+                <textarea
+                  value={tempTitle}
+                  onChange={handleTitleChange}
+                  className="w-100 form-control fs-3 text-center fw-bold"
+                  style={{
+                    minHeight: '10rem',
+                    resize: 'none',
+                  }}
+                />
+              </Modal.Body>
+              <Modal.Footer>
+                <Button variant="primary" onClick={handleReset}>
+                  {t('editChartTitleReset')}
+                </Button>
+                <Button variant="primary" onClick={handleSave}>
+                  {t('editChartTitleSave')}
+                </Button>
+                <Button variant="secondary" onClick={handleClose}>
+                  {t('editChartTitleCancel')}
+                </Button>
+              </Modal.Footer>
+            </Modal>
+
             <button className="btn btn-outline-dark mr-3" onClick={handleExportWithComponent}>
               {t('analysisDisplayGeneratePDF')}
+            </button>
+            <button className="btn btn-outline-dark mr-3" onClick={resetAnalysis}>
+              {t('resetAnalysisButton')}
             </button>
           </Col>
         </div>

@@ -2,7 +2,6 @@ import { AnalyticsResponse } from '@hha/common';
 import { MONTH_AND_YEAR_DATE_FORMAT, YEAR_ONLY_DATE_FORMAT } from 'constants/date';
 import { language, timezone } from 'constants/timezones';
 import moment from 'moment';
-import { AnalyticsMap } from 'pages/analytics/Analytics';
 
 import { DayRange } from 'react-modern-calendar-datepicker';
 import { DateWithFormat } from './analytics';
@@ -130,6 +129,13 @@ const getDateForAnalytics = (analyticsData: AnalyticsResponse) => {
 
   return dateWithFormat;
 };
+
+const compareDate = (timeData1: AnalyticsResponse, timeData2: AnalyticsResponse) => {
+  const dateWithFormat1 = getDateForAnalytics(timeData1);
+  const dateWithFormat2 = getDateForAnalytics(timeData2);
+
+  return compareDateWithFormat(dateWithFormat1, dateWithFormat2);
+};
 const formatDateForChart = (dateWithFormat: DateWithFormat) => {
   const formattedDate = moment(dateWithFormat.time).format(dateWithFormat.format);
 
@@ -172,4 +178,5 @@ export {
   compareDateWithFormat,
   defaultFromDate,
   defaultToDate,
+  compareDate,
 };

@@ -1,11 +1,5 @@
-import {
-  AnalyticsQuery,
-  AnalyticsResponse,
-  DepartmentJson,
-  MonthOrYearOption,
-  QuestionPrompt,
-} from '@hha/common';
-import { formatQuestion, reformatQuestionPrompt, separateDepartmentAndQuestion } from './string';
+import { AnalyticsQuery, AnalyticsResponse, DepartmentJson, MonthOrYearOption } from '@hha/common';
+import { formatQuestion, separateDepartmentAndQuestion } from './string';
 import {
   MONTH_AND_YEAR_DATE_FORMAT,
   YEAR_DASH_MONTH_FORMAT,
@@ -18,9 +12,30 @@ import {
   QuestionPromptUI,
   TimeOptions,
 } from 'pages/analytics/Analytics';
-import { DataSet, DataSetMap } from 'components/charts/ChartSelector';
-import { compareDateWithFormat, formatDateForChart, getDateForAnalytics } from './dateUtils';
-import i18next from 'i18next';
+import { ChartType, DataSet, DataSetMap } from 'components/charts/ChartSelector';
+import {
+  compareDate,
+  compareDateWithFormat,
+  formatDateForChart,
+  getDateForAnalytics,
+} from './dateUtils';
+import i18next, { t } from 'i18next';
+import i18n from 'i18n';
+import jsPDF from 'jspdf';
+
+type ChartTitleParams = {
+  chartType: string;
+  questions: string;
+  dateFrom: string;
+  dateTo: string;
+  aggregateBy: string;
+};
+
+export const getChartTypeNames = () => ({
+  bar: t('analyticsBarChart'),
+  line: t('analyticsLineChart'),
+  pie: t('analyticsPieChart'),
+});
 
 export const findDepartmentIdByName = (departments: DepartmentJson[], departmentName: string) => {
   return departments.find((department) => department.name === departmentName)?.id;
@@ -200,6 +215,14 @@ const isTimeInYearOnlyFormat = (time: string) => {
   //there are two time formats: Jan 2024 or 2024 (MMM YYYY or YYYY)
   return time.split(' ').length <= 1;
 };
+
+const translateTime = (formattedTime: string) => {
+  const [month, year] = formattedTime.split(' ');
+
+  const translatedMonth = i18next.t(`months.${month}`);
+
+  return `${translatedMonth} ${year}`;
+};
 export const translateTimeCategory = (dataSets: DataSet[]) => {
   if (dataSets.length === 0) {
     return dataSets;
@@ -212,15 +235,124 @@ export const translateTimeCategory = (dataSets: DataSet[]) => {
   return dataSets.map((dataSet) => {
     const time = dataSet.x;
 
-    const [month, year] = time.split(' ');
-
-    const translatedMonth = i18next.t(`months.${month}`);
+    const translatedTime = translateTime(time);
 
     const translatedDataSet: DataSet = {
-      x: `${translatedMonth} ${year}`,
+      x: translatedTime,
       y: dataSet.y,
     };
 
     return translatedDataSet;
   });
+};
+
+export const prepareAggregateData = (analyticsData: AnalyticsMap) => {
+  return Object.keys(analyticsData).map((departmentQuestionKey) =>
+    sumUpAnalyticsData(analyticsData[departmentQuestionKey]),
+  );
+};
+
+export const prepareAggregateLabels = (analyticsData: AnalyticsMap, questionMap: QuestionMap) => {
+  return Object.keys(analyticsData).map((label) => translateChartLabel(label, questionMap));
+};
+
+export const prepareTimeLabel = (timeData: AnalyticsResponse) => {
+  const dateWithFormat = getDateForAnalytics(timeData);
+  const formattedTime = formatDateForChart(dateWithFormat);
+
+  if (isTimeInYearOnlyFormat(formattedTime)) {
+    return formattedTime;
+  } else {
+    return translateTime(formattedTime);
+  }
+};
+
+export const prepareTimeLabels = (analyticsTimeData: AnalyticsResponse[]) => {
+  return analyticsTimeData.map((timeData) => prepareTimeLabel(timeData));
+};
+
+export const prepareTimeData = (analyticsData: AnalyticsMap) => {
+  // time data has to be sorted so the pie chart displays the data by month or year in ascending order
+  // note that only time data in a question will be sorted and not the entire time data across all questions
+
+  let analyticsTimeData: AnalyticsResponse[] = [];
+
+  Object.keys(analyticsData).forEach((departmentQuestionKey) => {
+    const timeData = analyticsData[departmentQuestionKey];
+
+    timeData.sort((timeData1, timeData2) => compareDate(timeData1, timeData2));
+    analyticsTimeData = analyticsTimeData.concat(timeData);
+  });
+
+  return analyticsTimeData;
+};
+
+export const getActiveQuestionsString = (questionMap: QuestionMap): string => {
+  return Object.entries(questionMap)
+    .map(([key, questions]) =>
+      questions
+        .filter((question) => question.checked)
+        .map((question) => {
+          const questionText = i18n.language === 'en' ? question.en : question.fr;
+          const departmentName = t(`departments.${key}`);
+          return `[${departmentName}] ${questionText}`;
+        }),
+    )
+    .flat()
+    .join(', ');
+};
+
+export const generateChartTitle = (params: ChartTitleParams): string => {
+  const template = t('chartTitleTemplate');
+  return template.replace(/\$\{(.*?)\}/g, (_, key) => params[key as keyof ChartTitleParams]);
+};
+
+export const constructExport = (
+  canvas: HTMLCanvasElement,
+  timeOptions: TimeOptions,
+  selectedChart: ChartType,
+) => {
+  const imgData = canvas.toDataURL('image/png');
+  const imgWidth = canvas.width;
+  const imgHeight = canvas.height;
+  // make the pdf landscape or portrait depending on dimensions of capture
+  const pdf =
+    imgWidth >= imgHeight
+      ? new jsPDF('landscape', 'mm', 'a4', true)
+      : new jsPDF('portrait', 'mm', 'a4', true);
+  const pdfWidth = pdf.internal.pageSize.getWidth();
+  const pdfHeight = pdf.internal.pageSize.getHeight();
+  // ratio is used to scale the image so that it fits into the more restrictive dimension, to avoid visual cutoff at the edges
+  const ratio = Math.min(pdfWidth / imgWidth, pdfHeight / imgHeight);
+  // find points to center image horizontally and vertically
+  const imgX = (pdfWidth - imgWidth * ratio) / 2;
+  const imgY = (pdfHeight - imgHeight * ratio) / 2;
+  // add chart components to the pdf
+  pdf.addImage(imgData, 'PNG', imgX, imgY, imgWidth * ratio, imgHeight * ratio);
+
+  // add HHA logo as watermark
+  const logoUrl = '/hha-logo.png';
+  const logoImage = new Image();
+  logoImage.src = logoUrl;
+
+  logoImage.onload = function () {
+    // add logoImage to the pdf in the top right
+    const logoWidth = 30;
+    const logoHeight = 30;
+    // add 10mm padding on top right corner
+    const logoX = pdfWidth - logoWidth - 10;
+    const logoY = 10;
+
+    // Add the logo image to the PDF
+    pdf.addImage(logoImage, 'PNG', logoX, logoY, logoWidth, logoHeight);
+    pdf.save(
+      `${timeOptions.from} - ${timeOptions.to} - ${getChartTypeNames()[selectedChart]} ${t('analyticsExportFilename')}.pdf`,
+    );
+  };
+  logoImage.onerror = function () {
+    // if failing to load logo, save the pdf without it anyways
+    pdf.save(
+      `${timeOptions.from} - ${timeOptions.to} - ${getChartTypeNames()[selectedChart]} ${t('analyticsExportFilename')}.pdf`,
+    );
+  };
 };

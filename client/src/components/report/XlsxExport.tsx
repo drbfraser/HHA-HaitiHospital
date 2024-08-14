@@ -283,7 +283,11 @@ export const XlsxGenerator = ({ questionItems, metaData }: ReportType) => {
   };
 
   return (
-    <button className="btn btn-outline-dark mr-3" onClick={() => generateExcel(metaData)}>
+    <button
+      className="btn btn-outline-dark mr-3"
+      data-testid="report-download-excel-button"
+      onClick={() => generateExcel(metaData)}
+    >
       {t('departmentReportDisplayDownloadExcel')}
     </button>
   );
