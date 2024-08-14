@@ -68,7 +68,7 @@ jobs:
 
       - name: Spin up containers
         run: |
-          docker-compose up --build
+          docker compose -f docker-compose.ci.yml up --build
 
   # ----------------------------------------------------------------------------
   # Publish to DockerHub
