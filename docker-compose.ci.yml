@@ -11,6 +11,8 @@ services:
       MONGOMS_DOWNLOAD_URL: https://fastdl.mongodb.org/linux/mongodb-linux-x86_64-debian12-7.0.9.tgz
       CORS: http://test:3000
       IS_GITLAB_CI: 'true'
+      PASSWORD_SEED: 'C@td0g'
+      RAND_PASSWORD_SEED: 'C@td0g'
 
     healthcheck:
       test: ['CMD-SHELL', 'curl localhost:3000']
