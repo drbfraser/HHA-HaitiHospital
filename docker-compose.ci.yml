@@ -44,7 +44,7 @@ services:
       HOME: /root
 
     entrypoint: /bin/bash -c "ls -al && npm ci && npx cypress run"
-
+    user: root
     working_dir: /client
     volumes:
-      - ./client/:/client:rw
+      - ./client/:/client
