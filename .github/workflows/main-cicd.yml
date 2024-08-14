@@ -62,7 +62,7 @@ jobs:
     timeout-minutes: 60
     steps:
       - name: LS
-        run: sudo chmod +w -R ${GITHUB_WORKSPACE}; rm -rf ${GITHUB_WORKSPACE}/*;
+        uses: mxschmitt/action-tmate@v3
       - name: Checkout code into container
         uses: actions/checkout@v3
 
