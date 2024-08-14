@@ -67,7 +67,6 @@ jobs:
           fetch-depth: 0
 
       - name: Spin up containers
-        working-directory: /isolated_build/repo/
         run: |
           docker compose -f docker-compose.ci.yml up
 
