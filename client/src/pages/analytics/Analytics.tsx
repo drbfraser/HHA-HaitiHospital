@@ -19,9 +19,8 @@ import {
 } from 'utils/analytics';
 import { Spinner } from 'components/spinner/Spinner';
 import ChartSelector, { ChartType } from 'components/charts/ChartSelector';
-import { MONTH_LITERAL, YEAR_DASH_MONTH_FORMAT } from 'constants/date';
-import { DepartmentDropDown } from 'components/dropdown/DepartmentDropDown';
-import { createAnalyticsKey, reformatQuestionPrompt } from 'utils/string';
+import { MONTH_LITERAL } from 'constants/date';
+import { createAnalyticsKey } from 'utils/string';
 import AnalyticsTotal from 'components/analytics/Total';
 import { defaultFromDate, defaultToDate } from 'utils';
 import html2canvas from 'html2canvas';
@@ -59,8 +58,6 @@ const Analytics = () => {
 
   const [questionMap, setQuestionMap] = useState<QuestionMap>({});
 
-  const [selectedDepartmentNames, setSelectedDepartmentNames] = useState<string[]>([]);
-
   const [timeOptions, setTimeOptions] = useState<TimeOptions>({
     from: defaultFromDate(),
     to: defaultToDate(),
@@ -78,27 +75,28 @@ const Analytics = () => {
 
   const pdfRef = useRef<HTMLDivElement>(null);
 
+  const fetchDepartments = async () => {
+    const departments = await getAllDepartments(history);
+    const departmentsWithReport = filterDepartmentsByReport(departments);
+
+    setDepartments(departmentsWithReport);
+
+    // should show a pop up communicating that there is no department with report
+    //As of current, this line of code is a technical debt and maybe changed in the future
+
+    if (departmentsWithReport.length === 0) {
+      return;
+    }
+  };
+
   useEffect(() => {
-    const fetchDepartments = async () => {
-      const departments = await getAllDepartments(history);
-      const departmentsWithReport = filterDepartmentsByReport(departments);
-
-      setDepartments(departmentsWithReport);
-
-      // should show a pop up communicating that there is no department with report
-      //As of current, this line of code is a technical debt and maybe changed in the future
-
-      if (departmentsWithReport.length === 0) {
-        return;
-      }
-
-      setSelectedDepartmentNames([departmentsWithReport[0].name]);
-    };
-
     fetchDepartments();
   }, [history]);
 
-  const fetchQuestionPrompts = async (departmentName: string, firstQuestionByDefault: boolean) => {
+  const fetchQuestionPrompts = async (
+    departmentName: string,
+    shouldCheckFirstQuestion: boolean,
+  ) => {
     const selectedDepartmentId = findDepartmentIdByName(departments, departmentName)!;
 
     const questionPrompts = await getAllQuestionPrompts(history, selectedDepartmentId);
@@ -111,28 +109,41 @@ const Analytics = () => {
       //this ensures the analytics page at the beginning does not have blank data
       //A checked state is maintained to keep track of user selected questions
 
-      if (index === 0 && firstQuestionByDefault) {
+      if (index === 0 && shouldCheckFirstQuestion) {
         checked = true;
       }
 
       return { ...questionPrompt, checked };
     });
 
-    setQuestionMap({ ...questionMap, [departmentName]: questionPromptsUI });
+    return questionPromptsUI;
+  };
+
+  const updateQuestionMap = async () => {
+    const fetchQuestionPromises: Promise<QuestionPromptUI[]>[] = [];
+
+    departments.forEach((department, index) => {
+      //When the page is loaded, the first department's question is analyzed
+      //This is an intentional design choice because we want the user to view an analytic data before selecting filters
+
+      const shouldCheckFirstQuestion = index === 0;
+      const questionPromise = fetchQuestionPrompts(department.name, shouldCheckFirstQuestion);
+      fetchQuestionPromises.push(questionPromise);
+    });
+
+    const allQuestionPromptsUI = await Promise.all(fetchQuestionPromises);
+
+    const updatedQuestionMap: QuestionMap = {};
+
+    allQuestionPromptsUI.forEach((questionPrompstUI, index) => {
+      updatedQuestionMap[departments[index].name] = questionPrompstUI;
+    });
+
+    setQuestionMap(updatedQuestionMap);
   };
 
   useEffect(() => {
-    // should show a pop up communicating that there is no department with report
-    //As of current, this line of code is a technical debt and maybe changed in the future
-
-    if (departments.length === 0) {
-      return;
-    }
-
-    //When the page is loaded, the first department's question is loaded
-    //This is an intentional design choice because we want the user to view an analytic data before selecting filters
-
-    fetchQuestionPrompts(departments[0].name, true);
+    updateQuestionMap();
   }, [departments, history]);
 
   const fetchAnalytics = async () => {
@@ -223,37 +234,6 @@ const Analytics = () => {
     console.log('finished export!');
   };
 
-  const onDepartmentSelected = (event: React.MouseEvent<HTMLElement>) => {
-    let updateDepartmentsSelected: string[] = [];
-
-    const departmentSelected = event.currentTarget.id;
-
-    //If a department has been unchecked then a good heuristic for unchecked is to check if department has been selected previously
-    // If a department has been checked then a good heuristic is to check if a department has not been selected previously
-    // the goal is to fetch department questions when a department is selected
-    // the goal is to remove department's questions when a department is unselected
-
-    if (!selectedDepartmentNames.includes(departmentSelected)) {
-      updateDepartmentsSelected = [...selectedDepartmentNames, departmentSelected];
-
-      fetchQuestionPrompts(departmentSelected, false);
-    } else {
-      updateDepartmentsSelected = selectedDepartmentNames.filter(
-        (department) => department !== departmentSelected,
-      );
-
-      delete questionMap[departmentSelected];
-
-      //ensures that when a department is deleted from the question map, the chart component only renders after new analytics data is fetched
-      //this prevents bugs which occur when the analytics data is not in sync with the question map
-
-      setIsLoading(true);
-      setQuestionMap({ ...questionMap });
-    }
-
-    setSelectedDepartmentNames(updateDepartmentsSelected);
-  };
-
   const onQuestionsSelected = (event: ChangeEvent<HTMLInputElement>) => {
     const departmentDashQuestion = event.target.id;
 
@@ -304,12 +284,6 @@ const Analytics = () => {
         <div className="w-100 d-flex flex-column mr-auto">
           <div className="w-100 d-flex flex-row justify-content-between">
             <div className="d-flex flex-row gap-3" data-testid="select-department-question-button">
-              <DepartmentDropDown
-                dropDowns={getAllDepartmentsByName(departments!)}
-                title={t('analyticsDepartment')}
-                selectedDropDowns={selectedDepartmentNames}
-                setSelectedDropDowns={onDepartmentSelected}
-              />
               <Button variant="outline-dark" onClick={handleShowQuestionsModal}>
                 {t('analyticsQuestion')}
               </Button>
