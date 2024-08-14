@@ -69,7 +69,7 @@ jobs:
         working-directory: /isolated_build/repo/
         run: |
           whoami
-          sudo usermod -a -G docker whoami
+          sudo usermod -a -G docker $(whoami)
           newgrp docker
           docker compose -f docker-compose.ci.yml up
 
