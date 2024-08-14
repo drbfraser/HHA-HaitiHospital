@@ -67,6 +67,7 @@ jobs:
           path: ${{github.workspace}}/${{github.job}}
 
       - name: Spin up containers
+        working-directory: ${{github.workspace}}/${{github.job}}
         run: |
           docker compose -f docker-compose.ci.yml up --build
 
