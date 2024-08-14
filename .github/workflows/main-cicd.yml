@@ -62,7 +62,7 @@ jobs:
     timeout-minutes: 60
     steps:
       - name: Checkout code into container
-        uses: bfraser/cicd/actions/checkout@v1
+        uses: actions/checkout@v3
         with:
           path: /isolated_build/repo/
       - name: Spin up containers
