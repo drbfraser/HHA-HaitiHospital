@@ -36,6 +36,7 @@ const ReportMonthForm = ({
           type="submit"
           className={`btn ${!isValidMonth ? 'btn-secondary' : 'btn-primary'} mt-2`}
           disabled={!isValidMonth}
+          data-testid="report-apply-changes-month-button"
         >
           {t('departmentReportDisplayMonthApplyChanges')}
         </button>

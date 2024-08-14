@@ -38,7 +38,7 @@ const FormField = (props: FormFieldProps) => {
       <input
         className={cn(
           {
-            'is-invalid': touched && props.inputState !== true,
+            'is-invalid': (touched || value !== '') && props.inputState !== true,
             'form-control': !props.readOnly,
             'form-control-plaintext': props.readOnly,
           },
@@ -55,7 +55,7 @@ const FormField = (props: FormFieldProps) => {
         style={props.style}
         onBlur={() => setTouched(true)}
       />
-      {!props.readOnly && touched && props.inputState !== true && (
+      {!props.readOnly && (touched || value !== '') && props.inputState !== true && (
         <div className="invalid-feedback">{props.inputState.message?.[language]}</div>
       )}
     </div>

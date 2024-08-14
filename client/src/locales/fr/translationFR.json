@@ -260,12 +260,19 @@
   "analyticsAggregateBy": "Agréger par",
   "analyticsCharts": "Graphiques",
   "analyticsTotal": "Totale",
-  "analyticsBarChart": "Diagramme à bandes",
-  "analyticsLineChart": "Graphique en ligne",
+  "analyticsBarChart": "Diagramme à colonnes",
+  "analyticsPieChart": "Diagramme circulaire",
+  "analyticsLineChart": "Graphique linéaire",
   "analyticsFor": "pour",
   "analyticsInvalidChart": "Avertissement Type de graphique inconnu sélectionné",
   "analysisDisplayGeneratePDF": "Télécharger PDF",
   "analyticsExportFilename": "Analytique",
+  "resetAnalysisButton": "Réinitialiser l'analyse",
+  "chartTitleTemplate": "${chartType} montrant ${questions} de ${dateFrom} à ${dateTo} chaque ${aggregateBy}",
+  "editChartTitle": "Modifier le titre du graphique",
+  "editChartTitleSave": "Enregistrer",
+  "editChartTitleReset": "Réinitialisation",
+  "editChartTitleCancel": "Annuler",
   "employeeOfTheMonthAdd": "Ajouter un nouvel employé du mois",
   "employeeOfTheMonthEdit": "Mise à jour",
   "employeeOfTheMonthList": "Voir les anciens employés du mois",
@@ -477,8 +484,9 @@
   "dropdown": {
     "month": "Mois",
     "year": "Année",
-    "bar": "Bar",
-    "line": "Doubler"
+    "bar": "À colonnes",
+    "line": "Linéaire",
+    "pie": "Circulaire"
   },
 
   "months": {

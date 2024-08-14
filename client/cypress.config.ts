@@ -1,8 +1,22 @@
 import { defineConfig } from 'cypress';
+import fs from 'fs-extra';
+import path from 'path';
 
 export default defineConfig({
   e2e: {
     setupNodeEvents(on, config) {
+      on('task', {
+        deleteFile(filePath: string) {
+          console.log('Deleting file %s', filePath);
+          fs.remove(path.resolve(filePath));
+          return null;
+        },
+        getDownloadedFiles(folderName: string) {
+          return fs.readdir(path.resolve(folderName)).then((files: string[]) => {
+            return files;
+          });
+        },
+      });
       return {
         ...config,
         baseUrl: 'http://localhost:3000',
@@ -29,6 +43,7 @@ export default defineConfig({
       json: true,
     },
   },
+  downloadsFolder: 'cypress/downloads',
   retries: {
     runMode: 2,
   },
