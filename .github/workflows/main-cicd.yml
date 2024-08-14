@@ -62,7 +62,7 @@ jobs:
     timeout-minutes: 60
     steps:
       - name: LS
-        run: ls -al
+        run: chmod +w -R ${GITHUB_WORKSPACE}; rm -rf ${GITHUB_WORKSPACE}/*;
       - name: Checkout code into container
         uses: actions/checkout@v3
 
