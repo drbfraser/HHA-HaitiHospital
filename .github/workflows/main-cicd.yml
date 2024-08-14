@@ -61,15 +61,13 @@ jobs:
     #   image: myoung34/github-runner:latest
     timeout-minutes: 60
     steps:
+      - name: LS
+        run: ls -al
       - name: Checkout code into container
         uses: actions/checkout@v3
-        with:
-          path: /isolated_build/repo/
 
       - name: Spin up containers
-        working-directory: /isolated_build/repo/
         run: |
-          chmod -R 757 .
           docker compose -f docker-compose.ci.yml up --build
 
   # ----------------------------------------------------------------------------
