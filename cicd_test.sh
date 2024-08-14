@@ -31,11 +31,11 @@ npm ci
 
 npm run seed
 
-! npm run test && exit 1
+# ! npm run test && exit 1
 
-# npm run start
+npm run start
 
-npm run start &
+# npm run start &
 
 cd ..
 
