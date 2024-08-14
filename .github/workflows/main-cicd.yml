@@ -61,10 +61,10 @@ jobs:
     #   image: myoung34/github-runner:latest
     timeout-minutes: 60
     steps:
-      - name: LS
-        uses: mxschmitt/action-tmate@v3
       - name: Checkout code into container
         uses: actions/checkout@v3
+        with:
+          path: ${{github.workspace}}/${{github.job}}
 
       - name: Spin up containers
         run: |
