@@ -43,7 +43,7 @@ services:
       SERVER_URL: http://test:8000
       HOME: /root
 
-    entrypoint: /bin/bash -c "npm ci && npx cypress run"
+    entrypoint: /bin/bash -c "ls -al && npm ci && npx cypress run"
 
     working_dir: /client
     volumes:
