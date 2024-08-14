@@ -13,6 +13,7 @@ services:
       IS_GITLAB_CI: 'true'
       PASSWORD_SEED: 'C@td0g'
       RAND_PASSWORD_SEED: 'C@td0g'
+      SERVER_PORT: 8000
 
     healthcheck:
       test: ['CMD-SHELL', 'curl localhost:3000']
@@ -20,10 +21,6 @@ services:
       timeout: 10s
       retries: 5
       start_period: 1m
-
-    ports:
-      - 3000:3000
-      - 8000:8000
 
   test_mongodb:
     image: mongo:5.0.14-focal
