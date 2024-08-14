@@ -33,7 +33,7 @@ services:
       driver: none
 
   cypress:
-    image: 'cypress/included'
+    build: ./client
     depends_on:
       test:
         condition: service_healthy
@@ -41,9 +41,3 @@ services:
     environment:
       BASE_URL: http://test:3000
       SERVER_URL: http://test:8000
-
-    entrypoint: /bin/bash -c "ls -al && npm ci && npx cypress run"
-    user: root
-    working_dir: /client
-    volumes:
-      - ./client/:/client
