@@ -34,16 +34,15 @@ const DbErrorHandler = (e: Error | AxiosError, history: History, toastMsg: strin
       const regex = /Username.*exists/i;
       const responseData = err.response?.data;
 
-      if (responseData && regex.test(responseData.toString())) {
+      if (responseData && regex.test(responseData)) {
         toast.error(`${toastMsg}: Username exists`);
       } else {
         toast.error(`${toastMsg}: Invalid input`);
       }
-
       break;
     }
     case UNPROCCESABLENTITY_CODE: {
-      toast.error(ErrorListToast(toastMsg, err.message), {
+      toast.error(ErrorListToast(toastMsg, err.response.data.errors), {
         autoClose: false,
         progress: 1,
       });
@@ -53,7 +52,6 @@ const DbErrorHandler = (e: Error | AxiosError, history: History, toastMsg: strin
       console.error('Error Needs a Handler');
       throw new Error('Error Needs a Handler');
   }
-  throw new Error(err.message);
+  throw new Error(err.response?.data);
 };
-
 export default DbErrorHandler;
