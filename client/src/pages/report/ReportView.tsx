@@ -2,7 +2,6 @@ import { FormEvent, MouseEvent, useCallback, useEffect, useRef, useState } from 
 import { NavigationInfo, navigate } from 'components/report/utils';
 import { ObjectSerializer, QuestionGroup, ReportMetaData, Role } from '@hha/common';
 import { Prompt, useHistory, useLocation } from 'react-router-dom';
-import { monthYearOptions, userLocale } from 'constants/date';
 import ConfirmationModal from 'components/popup_modal/ConfirmationModal';
 import { History } from 'history';
 import Layout from 'components/layout';
@@ -35,7 +34,6 @@ const ReportView = () => {
   const department = metaData?.departmentId ? departmentIdKeyMap.get(metaData.departmentId) : null;
   const [editMonth, setEditMonth] = useState(false);
   const [reportMonth, setReportMonth] = useState<Date>();
-  const [showViewEditBtn, setShowViewEditBtn] = useState(true);
 
   const { t } = useTranslation();
   const history: History = useHistory<History>();
@@ -82,7 +80,6 @@ const ReportView = () => {
     } else {
       setEditMonth((prev) => !prev);
     }
-    setShowViewEditBtn(true);
   };
 
   const reportHandler = async () => {

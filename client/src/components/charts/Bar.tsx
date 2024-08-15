@@ -12,14 +12,12 @@ import { Bar } from 'react-chartjs-2';
 import { createDefaultChartOptions } from './options';
 import { ChartProps, DataSet } from './ChartSelector';
 import {
-  findQuestion,
   prepareDataSetForChart,
   translateChartLabel,
   translateTimeCategory,
 } from 'utils/analytics';
 import GRAPH_COLOR from 'constants/graphColor';
 import { useTranslation } from 'react-i18next';
-import { formatQuestion, separateDepartmentAndQuestion } from 'utils/string';
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 

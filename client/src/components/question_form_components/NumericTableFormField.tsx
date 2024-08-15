@@ -50,7 +50,8 @@ const NumericTableFormField = ({
   const language = i18n.resolvedLanguage;
   const greyMask = question.getGreyMask();
   const calculationMask = question.getCalculationMask();
-  const [calculatedCellsUpdated, setCalculatedCellsUpdated] = useState(false);
+  // eslint-disable-next-line
+  const [calculatedCellsUpdated, setCalculatedCellsUpdated] = useState(false); // kept code as it may be important however disabled it
 
   const updateErrorSetFromSelf = useCallback(
     (questionId: string, rowIndex: number, colIndex: number) =>
@@ -72,6 +73,8 @@ const NumericTableFormField = ({
   );
 
   useEffect(() => {
+    // eslint disabled to avoid unused code warnings
+    // eslint-disable-next-line
     const updateCalculatedCells = () => {
       let calculatedUpdated = false;
       question.getRowHeaders().forEach((_, rowIndex) => {

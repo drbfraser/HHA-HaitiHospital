@@ -1,8 +1,8 @@
 import { QuestionPromptUI } from 'pages/analytics/Analytics';
 import { ChangeEvent, useState } from 'react';
-import { Col, Collapse, Row, Container } from 'react-bootstrap';
+import { Col, Collapse, Container } from 'react-bootstrap';
 import './QuestionCollapse.css';
-import { formatQuestion, reformatQuestionPrompt } from 'utils/string';
+import { formatQuestion } from 'utils/string';
 import classNames from 'classnames';
 import { useTranslation } from 'react-i18next';
 

@@ -1,10 +1,8 @@
-import { AnalyticsResponse } from '@hha/common';
 import BarChart from './Bar';
 import LineChart from './Line';
 import { AnalyticsMap, QuestionMap } from 'pages/analytics/Analytics';
 import { toast } from 'react-toastify';
 import { useTranslation } from 'react-i18next';
-import { forwardRef } from 'react';
 
 export type ChartType = 'bar' | 'line';
 

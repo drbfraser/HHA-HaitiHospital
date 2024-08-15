@@ -7,7 +7,6 @@ import { ReportMetaData } from '@hha/common';
 import { processCompositionOrSpecializedQuestion, processTableQuestion } from './QuestionRows';
 import { monthYearOptions, userLocale } from 'constants/date';
 import { useDepartmentData } from 'hooks';
-import { useState } from 'react';
 
 interface ReportType {
   questionItems: any[];

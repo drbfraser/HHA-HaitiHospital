@@ -1,16 +1,6 @@
-import {
-  AnalyticsQuery,
-  AnalyticsResponse,
-  DepartmentJson,
-  MonthOrYearOption,
-  QuestionPrompt,
-} from '@hha/common';
-import { formatQuestion, reformatQuestionPrompt, separateDepartmentAndQuestion } from './string';
-import {
-  MONTH_AND_YEAR_DATE_FORMAT,
-  YEAR_DASH_MONTH_FORMAT,
-  YEAR_ONLY_DATE_FORMAT,
-} from 'constants/date';
+import { AnalyticsQuery, AnalyticsResponse, DepartmentJson, MonthOrYearOption } from '@hha/common';
+import { formatQuestion, separateDepartmentAndQuestion } from './string';
+import { YEAR_DASH_MONTH_FORMAT } from 'constants/date';
 import moment from 'moment';
 import {
   AnalyticsMap,

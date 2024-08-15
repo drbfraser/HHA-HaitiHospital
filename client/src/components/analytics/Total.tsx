@@ -1,4 +1,4 @@
-import { Col, Row, Stack } from 'react-bootstrap';
+import { Col } from 'react-bootstrap';
 import { Container } from 'react-bootstrap';
 import TotalCard from './TotalCard';
 import { AnalyticsMap, QuestionMap } from 'pages/analytics/Analytics';

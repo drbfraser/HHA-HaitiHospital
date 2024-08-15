@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { Dropdown, DropdownButton, DropdownItemText } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 

@@ -7,10 +7,7 @@ import {
   ENDPOINT_MESSAGEBOARD_GET,
   ENDPOINT_MESSAGEBOARD_DELETE_BY_ID,
 } from 'constants/endpoints';
-import {
-  TOAST_MESSAGEBOARD_DELETE_ERROR,
-  TOAST_MESSAGEBOARD_GET_ERROR,
-} from 'constants/toastErrorMessages';
+import { TOAST_MESSAGEBOARD_GET_ERROR } from 'constants/toastErrorMessages';
 import { History } from 'history';
 import { ResponseMessage } from 'utils/response_message';
 
