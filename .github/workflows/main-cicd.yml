@@ -283,6 +283,7 @@ jobs:
         # Checkout the code, not into a container, because all work here is not in a container
         with:
           fetch-depth: 50
+          path: ${{github.workspace}}/${{github.job}}
       - id: set_step
         name: Export the IMAGE_TAG
         run: |
