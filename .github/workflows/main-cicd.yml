@@ -61,6 +61,12 @@ jobs:
     #   image: myoung34/github-runner:latest
     timeout-minutes: 60
     steps:
+      - name: Clean up build environment
+        if: always()
+        run: |
+          docker container prune -f
+          docker volume prune -f -a
+
       - name: Checkout code into container
         uses: actions/checkout@v3
         with:
@@ -83,8 +89,8 @@ jobs:
       - name: Tear down containers
         if: always()
         run: |
-          docker rm -v -f $(docker ps -qa)
-
+          docker container prune -f
+          docker volume prune -f -a
   # ----------------------------------------------------------------------------
   # Publish to DockerHub
   # ----------------------------------------------------------------------------
