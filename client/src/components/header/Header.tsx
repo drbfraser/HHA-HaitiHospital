@@ -10,7 +10,7 @@ interface HeaderProps {
 }
 
 const Header = ({ title }: HeaderProps) => {
-  const dispatch = useAuthDispatch();
+  const dispatch = useAuthDispatch(); // read dispatch method from context
   const history: History = useHistory<History>();
   const { t } = useTranslation();
   const user = useAuthState();
