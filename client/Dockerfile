@@ -10,6 +10,8 @@ RUN npx cypress install
 
 COPY . .
 
+RUN chmod +x cicd_test.sh
+
 RUN sed -i 's/\r$//' cypress_test.sh
 
 RUN mkdir -p /var/artifacts
