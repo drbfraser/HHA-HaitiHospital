@@ -1,35 +1,27 @@
 import { useCallback, useEffect, useState } from 'react';
-import { UserClientModel as User } from '@hha/common';
+import { UserClientModel as User, UserJson } from '@hha/common';
 import { getCurrentUser } from 'api/user';
 import { History } from 'history';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
 import { logOutUser } from '../../actions/authActions';
-import { useAuthDispatch } from '../../contexts';
+import { useAuthDispatch, useAuthState } from '../../contexts';
 
 interface HeaderProps {
   title?: string;
 }
 
 const Header = ({ title }: HeaderProps) => {
-  const dispatch = useAuthDispatch(); // read dispatch method from context
+  const dispatch = useAuthDispatch();
   const history: History = useHistory<History>();
-  const [userInfo, setUserInfo] = useState<User>();
   const { t } = useTranslation();
+  const user = useAuthState();
+  const userInfo: UserJson = user?.userDetails;
 
   const logout = () => {
     logOutUser(dispatch, history);
     history.push('/login');
   };
-
-  const fetchUser = useCallback(async () => {
-    const user = await getCurrentUser(history);
-    setUserInfo(user);
-  }, [history]);
-
-  useEffect(() => {
-    fetchUser();
-  }, [fetchUser]);
 
   return (
     <>
