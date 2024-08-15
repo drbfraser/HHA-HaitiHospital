@@ -17,7 +17,6 @@ import {
   translateChartLabel,
   translateTimeCategory,
 } from 'utils/analytics';
-import { useTranslation } from 'react-i18next';
 import { OPACITY_VALUE_MEDIUM } from 'constants/graphColor';
 import { getGraphColors } from 'utils/graphColors';
 
@@ -26,8 +25,6 @@ ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, T
 type LineChartProps = Omit<ChartProps, 'type'>;
 
 const LineChart = ({ analyticsData, questionMap }: LineChartProps) => {
-  const { t } = useTranslation();
-
   const dataSets = prepareDataSetForChart(analyticsData);
   const graphColors = getGraphColors(OPACITY_VALUE_MEDIUM);
 
