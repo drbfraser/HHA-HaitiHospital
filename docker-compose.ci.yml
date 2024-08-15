@@ -22,6 +22,9 @@ services:
       retries: 5
       start_period: 1m
 
+    volumes:
+      - artifacts-test:/var/artifacts
+
   test_mongodb:
     image: mongo:5.0.14-focal
     ports:
@@ -35,6 +38,12 @@ services:
       test:
         condition: service_healthy
 
+    volumes:
+      - artifacts-cypress:/var/artifacts
+
     environment:
       BASE_URL: http://test:3000
       SERVER_URL: http://test:8000
+volumes:
+  artifacts-test:
+  artifacts-cypress:

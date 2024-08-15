@@ -71,9 +71,19 @@ jobs:
         run: |
           docker compose -f docker-compose.ci.yml up --build --abort-on-container-exit
 
+      - name: Upload artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: artifacts
+          path: |
+            /var/lib/docker/volumes/artifacts-test/_data
+            /var/lib/docker/volumes/artifacts-cypress/_data
+
       - name: Tear down containers
         if: always()
-        run: docker rm -v -f $(docker ps -qa)
+        run: |
+          docker rm -v -f $(docker ps -qa)
 
   # ----------------------------------------------------------------------------
   # Publish to DockerHub

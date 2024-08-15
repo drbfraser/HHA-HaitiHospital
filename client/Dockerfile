@@ -10,7 +10,11 @@ RUN npx cypress install
 
 COPY . .
 
-ENTRYPOINT [ "npx", "cypress", "run"]
+RUN sed -i 's/\r$//' cypress_test.sh
+
+RUN mkdir -p /var/artifacts
+
+CMD ./cypress_test.sh
 
 
 
