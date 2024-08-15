@@ -12,8 +12,9 @@
 ./dist/*
 /dist
 
-# Istanbul HTML report output
+# Istanbul and Mochawesome HTML report output
 /coverage
+/mochawesome-report
 
 # random generated files on MacOS
 .DS_Store

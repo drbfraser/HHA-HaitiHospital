@@ -1,13 +1,22 @@
 import http from 'http';
-import { Accounts, closeServer, setUpSession, seedMongo, dropMongo } from 'testTools/mochaHooks';
+import {
+  Accounts,
+  closeServer,
+  setUpSession,
+  seedMongo,
+  dropMongo,
+  DEP_ID,
+} from 'testTools/mochaHooks';
 import { DEPARTMENT_ENDPOINT } from 'testTools/endPoints';
-import { HTTP_INTERNALERROR_CODE, HTTP_OK_CODE } from 'exceptions/httpException';
+import {
+  HTTP_INTERNALERROR_CODE,
+  HTTP_NOTFOUND_CODE,
+  HTTP_OK_CODE,
+} from 'exceptions/httpException';
 import { MongoMemoryServer } from 'mongodb-memory-server';
-import { seedCaseStudies } from 'seeders/seed';
+import chai, { expect } from 'chai';
+import chaiHttp from 'chai-http';
 
-const expect = require('chai').expect;
-const chai = require('chai');
-const chaiHttp = require('chai-http');
 chai.use(chaiHttp);
 
 let httpServer: http.Server;
@@ -30,36 +39,42 @@ describe('Department Tests', function () {
 
   beforeEach('start with clean mongoDB', async function () {
     await seedMongo();
-    await seedCaseStudies();
   });
 
   afterEach('clean up test data', async () => {
     await dropMongo();
   });
 
-  it('Should Successfully Get All Departments By Their IDs', async function () {
-    const departments = await agent.get(DEPARTMENT_ENDPOINT);
-    const generalId: string = departments.body[0].id;
-    const rehabId: string = departments.body[1].id;
-    const nicuId: string = departments.body[2].id;
-    const maternityId: string = departments.body[3].id;
-    const communityHealthId: string = departments.body[4].id;
+  it('Should get list of all departments', async function () {
+    const res = await agent.get(DEPARTMENT_ENDPOINT);
 
-    const general = await agent.get(`${DEPARTMENT_ENDPOINT}/${generalId}`);
-    const rehab = await agent.get(`${DEPARTMENT_ENDPOINT}/${rehabId}`);
-    const nicu = await agent.get(`${DEPARTMENT_ENDPOINT}/${nicuId}`);
-    const maternity = await agent.get(`${DEPARTMENT_ENDPOINT}/${maternityId}`);
-    const communityHealth = await agent.get(`${DEPARTMENT_ENDPOINT}/${communityHealthId}`);
+    expect(res).to.have.status(HTTP_OK_CODE);
+    expect(res.body).to.be.an('array');
+    expect(res.body[0]).to.have.property('id').that.is.a('string');
+    expect(res.body[0]).to.have.property('name').that.is.a('string');
+    expect(res.body[0]).to.have.property('hasReport').that.is.a('boolean');
+  });
 
-    expect(general).to.have.status(HTTP_OK_CODE);
-    expect(rehab).to.have.status(HTTP_OK_CODE);
-    expect(nicu).to.have.status(HTTP_OK_CODE);
-    expect(maternity).to.have.status(HTTP_OK_CODE);
-    expect(communityHealth).to.have.status(HTTP_OK_CODE);
+  it('Should get a department by its Id', async function () {
+    const res = await agent.get(`${DEPARTMENT_ENDPOINT}/${DEP_ID.GENERAL}`);
+
+    expect(res).to.have.status(HTTP_OK_CODE);
+    expect(res.body.id).to.be.equal(DEP_ID.GENERAL);
+    expect(res.body.name).to.be.equal('General');
+    expect(res.body.hasReport).to.be.false;
   });
 
   it('Should Unsuccessfully Get a Department Due to Invalid Id', async function () {
     const general = await agent.get(`${DEPARTMENT_ENDPOINT}/${'Invalid Id'}`);
+
     expect(general).to.have.status(HTTP_INTERNALERROR_CODE);
+  });
+
+  it('Should return not found code if department does not exist with that ID', async function () {
+    const invalidId = '76687ef1366f942478fa3d80';
+
+    const general = await agent.get(`${DEPARTMENT_ENDPOINT}/${invalidId}`);
+
+    expect(general).to.have.status(HTTP_NOTFOUND_CODE);
   });
 });

@@ -75,7 +75,6 @@ const GeneralReports = () => {
   };
 
   const departments = useDepartmentData();
-
   let departmentsCheckBoxes = [];
   departments.departmentIdKeyMap.forEach((value: string, key: string) => {
     departmentsCheckBoxes.push({ departmentId: key, departmentName: value });
@@ -141,6 +140,7 @@ const GeneralReports = () => {
                   variant="link"
                   title={t('button.delete')}
                   className="text-decoration-none link-secondary"
+                  data-testid="delete-report-button"
                 >
                   <i className="bi bi-trash"></i>
                 </Button>
@@ -149,6 +149,7 @@ const GeneralReports = () => {
                   className="text-decoration-none link-secondary"
                   to={Paths.getGeneralReportId(row.getValue()._id)}
                   onClick={(event) => event.stopPropagation()}
+                  data-testid="edit-report-button"
                 >
                   <i className="bi bi-pencil"></i>
                 </Link>
@@ -196,7 +197,11 @@ const GeneralReports = () => {
       ]) && (
         <div>
           <Link to="report">
-            <button className="btn btn-outline-dark" type="button">
+            <button
+              className="btn btn-outline-dark"
+              type="button"
+              data-testid="create-report-button"
+            >
               {t('createNewReport')}
             </button>
           </Link>

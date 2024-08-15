@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 export const DropDownMenus = {
   timeStep: ['month', 'year'],
   aggregateBy: ['month', 'year'],
-  charts: ['bar', 'line'],
+  charts: ['bar', 'line', 'pie'],
 };
 
 type DropDownProps = {
