@@ -1,6 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
-import { UserClientModel as User, UserJson } from '@hha/common';
-import { getCurrentUser } from 'api/user';
+import { UserJson } from '@hha/common';
 import { History } from 'history';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
@@ -16,7 +14,7 @@ const Header = ({ title }: HeaderProps) => {
   const history: History = useHistory<History>();
   const { t } = useTranslation();
   const user = useAuthState();
-  const userInfo: UserJson = user?.userDetails;
+  const userDetails: UserJson = user?.userDetails;
 
   const logout = () => {
     logOutUser(dispatch, history);
@@ -25,7 +23,7 @@ const Header = ({ title }: HeaderProps) => {
 
   return (
     <>
-      {userInfo && (
+      {userDetails && (
         <div className="d-flex align-items-center pt-3 pb-2 mb-3 mx-1 border-bottom row">
           <div className="col">
             <h2 data-testid="header" className="text-secondary">
@@ -43,7 +41,7 @@ const Header = ({ title }: HeaderProps) => {
                 data-bs-toggle="dropdown"
                 aria-expanded="false"
               >
-                <span className="d-none d-sm-inline fw-bold">{userInfo.name}</span>
+                <span className="d-none d-sm-inline fw-bold">{userDetails.name}</span>
               </button>
               <ul
                 className="dropdown-menu dropdown-menu-end rounded shadow"
@@ -51,7 +49,7 @@ const Header = ({ title }: HeaderProps) => {
               >
                 <li className="d-block d-sm-none">
                   <button className="dropdown-item disabled fw-bold text-muted mb-2">
-                    {userInfo.name}
+                    {userDetails.name}
                   </button>
                 </li>
                 <li>
@@ -60,16 +58,16 @@ const Header = ({ title }: HeaderProps) => {
                     className="dropdown-item disabled text-muted mb-2"
                   >
                     <i className="bi bi-person-badge-fill"></i>
-                    {t(userInfo.role)}
+                    {t(userDetails.role)}
                   </button>
                 </li>
-                <li className={`${userInfo.department.name ? 'd-block' : 'd-none'}`}>
+                <li className={`${userDetails.department.name ? 'd-block' : 'd-none'}`}>
                   <button
                     data-testid="user-department"
                     className="dropdown-item disabled text-muted"
                   >
                     <i className="bi bi-people-fill"></i>
-                    {userInfo.department.name}
+                    {userDetails.department.name}
                   </button>
                 </li>
                 <li>
