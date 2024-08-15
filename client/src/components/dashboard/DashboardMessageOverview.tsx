@@ -9,14 +9,15 @@ import { toI18nDateString } from 'constants/date';
 import { getAllMessageBoards } from 'api/messageBoard';
 
 const DashboardMessageOverview = () => {
+  const pxToCharRatio = 15;
   const [messages, setMessages] = useState<MessageJson[]>([]);
   const history: History = useHistory<History>();
   const { t, i18n } = useTranslation();
-  const [truncateLength, setTruncateLength] = useState(window.innerWidth / 15);
+  const [truncateLength, setTruncateLength] = useState(window.innerWidth / pxToCharRatio);
 
   useEffect(() => {
     const handleResize = () => {
-      setTruncateLength(window.innerWidth / 15);
+      setTruncateLength(window.innerWidth / pxToCharRatio);
     };
 
     window.addEventListener('resize', handleResize);
@@ -58,37 +59,17 @@ const DashboardMessageOverview = () => {
                 if (index <= 2) {
                   return (
                     <tr key={index}>
-                      <th
-                        scope="row"
-                        className="text-secondary text-wrap"
-                        style={{
-                          overflow: 'hidden',
-                          textOverflow: 'ellipsis',
-                        }}
-                      >
+                      <th scope="row" className="text-secondary text-wrap message-overflow">
                         {message.messageHeader}
                       </th>
-                      <td
-                        className="text-secondary text-wrap"
-                        style={{
-                          overflow: 'hidden',
-                          textOverflow: 'ellipsis',
-                        }}
-                      >
+                      <td className="text-secondary text-wrap message-overflow">
                         {!!message.user ? message.user.name : t('status.not_available')}
                       </td>
-                      <td
-                        className="text-secondary text-wrap"
-                        style={{
-                          overflow: 'hidden',
-                          textOverflow: 'ellipsis',
-                        }}
-                      >
+                      <td className="text-secondary text-wrap message-overflow">
                         {toI18nDateString(message.date, i18n.resolvedLanguage)}
                       </td>
 
                       <td className="text-secondary text-break">
-                        {/* show first 70 character of message only */}
                         {message.messageBody.length > truncateLength
                           ? message.messageBody.slice(0, Math.floor(truncateLength)) + '...'
                           : message.messageBody}

@@ -88,6 +88,24 @@ const Sidebar = ({
     { name: t('sidebarFrench'), code: 'fr' },
   ];
 
+  const sideBarExpansionThreshold = 768;
+  const [showSideBarExpansion, setShowSideBarExpansion] = useState(
+    window.innerWidth >= sideBarExpansionThreshold,
+  );
+
+  useEffect(() => {
+    const handleResize = () => {
+      setShowSideBarExpansion(window.innerWidth >= sideBarExpansionThreshold);
+    };
+
+    handleResize();
+    window.addEventListener('resize', handleResize);
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
+
   useEffect(() => {
     const matchMedia = window.matchMedia('(max-width: 768px)');
 
@@ -129,20 +147,22 @@ const Sidebar = ({
           }}
         />
         <ul className="nav nav-pills flex-column mb-auto p-2">
-          <SidebarItem
-            testid="expand-sidebar"
-            onClick={() => {
-              if (window.innerWidth >= 768) {
-                setIsExpanded((isExpanded) => !isExpanded);
-              }
-            }}
-          >
-            <i
-              className={`${iconMargins} ms-auto bi bi-chevron-bar-${
-                isExpanded ? 'left' : 'right'
-              }`}
-            />
-          </SidebarItem>
+          {showSideBarExpansion && (
+            <SidebarItem
+              testid="expand-sidebar"
+              onClick={() => {
+                if (window.innerWidth >= sideBarExpansionThreshold) {
+                  setIsExpanded((isExpanded) => !isExpanded);
+                }
+              }}
+            >
+              <i
+                className={`${iconMargins} ms-auto bi bi-chevron-bar-${
+                  isExpanded ? 'left' : 'right'
+                }`}
+              />
+            </SidebarItem>
+          )}
 
           <SidebarItem path="home">
             <i className={`${iconMargins} bi bi-house-door-fill`} />
