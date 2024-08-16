@@ -1,13 +1,7 @@
 #!/bin/bash
-
-RED='\033[1;31m'
-BLUE='\033[1;36m'
-COLOR_OFF='\033[0m'
-
 set -x
 set -e
 
-echo -e "${BLUE}"
 echo -e "Running common tests"
 
 npm -v
@@ -23,7 +17,11 @@ npm ci
 
 npm run build
 
+echo -e "Zipping common build to be uploaded as an artifact"
+
 tar -czf /var/artifacts/common_build.tar.gz .
+
+echo -e "Finished running common tests"
 
 cd ..
 
@@ -37,15 +35,21 @@ npm run seed
 
 ! npm run test && exit 1
 
+echo -e "Zipping server code to be uploaded as an artifact"
+
 tar -czf /var/artifacts/server_build.tar.gz .
 
 npm run coverage-report
+
+echo -e "Moving test reports to volume"
 
 mv coverage /var/artifacts/
 
 mv mochawesome-report /var/artifacts/
 
 npm run start &
+
+echo -e "Finished running server tests"
 
 cd ..
 
@@ -60,6 +64,9 @@ GENERATE_SOURCEMAP=false
 
 npm run build
 cd build
+
+echo -e "Zipping client build to be uploaded as an artifact"
+
 tar -czf /var/artifacts/client_build.tar.gz .
 
 cd ..

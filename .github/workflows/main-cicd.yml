@@ -57,12 +57,11 @@ jobs:
 
   test-ci:
     runs-on: [self-hosted, docker]
-    # container:
-    #   image: myoung34/github-runner:latest
     timeout-minutes: 60
     steps:
       - name: Clean up build environment
         if: always()
+        # remove all volumes and containers before starting this job
         run: |
           docker container prune -f
           docker volume prune -f -a
@@ -70,10 +69,13 @@ jobs:
       - name: Checkout code into container
         uses: actions/checkout@v3
         with:
+          #ensures that the job clones the repo in a new directory elimnating permission issues when cleaning workspace for checkout
           path: ${{github.workspace}}/${{github.job}}
 
       - name: Spin up containers
         working-directory: ${{github.workspace}}/${{github.job}}
+        # the current user's id and group should be used to create artifacts to avoid permission issues when uploading artifacts
+        # abort-on-container-exit exits the process when one container exits (the exit code of the container determines if the process failed)
         run: |
           export MY_UID="$(id -u)"
           export MY_GID="$(id -g)"
@@ -84,73 +86,77 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: artifacts
+          # in linux, docker volumes are stored in /var/lib/docker/volumes/
           path: |
             /var/lib/docker/volumes/artifacts-test/_data
             /var/lib/docker/volumes/artifacts-cypress/_data
 
       - name: Tear down containers
         if: always()
+        # remove all volumes and containers after job ends
         run: |
           docker container prune -f
           docker volume prune -f -a
   # ----------------------------------------------------------------------------
   # Publish to DockerHub
   # ----------------------------------------------------------------------------
-  # export-image-tag:
-  #   runs-on: [self-hosted, docker]
-  #   outputs:
-  #     image_tag: ${{ steps.set_step.outputs.tag }}
-  #   steps:
-  #     - uses: actions/checkout@v3
-  #       # Checkout the code, not into a container, because all work here is not in a container
-  #       with:
-  #         fetch-depth: 50
-  #     - id: set_step
-  #       name: Export the IMAGE_TAG
-  #       run: |
-  #         export IMAGE_TAG=v$(git show -s --format=%cs ${{ github.sha }}).`git rev-parse --short=8 ${{ github.sha }}`
-  #         echo "IMAGE_TAG = '$IMAGE_TAG'"
-  #         echo "tag=$IMAGE_TAG" >> "$GITHUB_OUTPUT"
+  export-image-tag:
+    runs-on: [self-hosted, docker]
+    outputs:
+      image_tag: ${{ steps.set_step.outputs.tag }}
+    steps:
+      - uses: actions/checkout@v3
+        # Checkout the code, not into a container, because all work here is not in a container
+        with:
+          fetch-depth: 50
+      - id: set_step
+        name: Export the IMAGE_TAG
+        run: |
+          export IMAGE_TAG=v$(git show -s --format=%cs ${{ github.sha }}).`git rev-parse --short=8 ${{ github.sha }}`
+          echo "IMAGE_TAG = '$IMAGE_TAG'"
+          echo "tag=$IMAGE_TAG" >> "$GITHUB_OUTPUT"
 
-  # build-docker-publish-docker-images:
-  #   needs: [test-ci, export-image-tag]
-  #   runs-on: [self-hosted, docker]
-  #   if: ${{ github.ref_name == 'main' }}
-  #   timeout-minutes: 60
-  #   env:
-  #     IMAGE_TAG: ${{ needs.export-image-tag.outputs.image_tag}}
-  #   steps:
-  #     - uses: actions/checkout@v3
-  #       # Checkout the code, not into a container, because all work here is not in a container
-  #       with:
-  #         fetch-depth: 50
-  #     - name: Get all build products (into own folders)
-  #       uses: actions/download-artifact@v3
-  #     - name: Move build artifacts into root
-  #       run: |
-  #         mv test-build-common/common_build.tar.gz .
-  #         mv test-build-server/server_build.tar.gz .
-  #         mv test-build-client/client_build.tar.gz .
-  #     - name: Printing debug information...
-  #       run: |
-  #         echo "IMAGE_TAG = '$IMAGE_TAG'"
-  #         echo "Files in current folder before building image"
-  #         ls -al
-  #     - name: Running 'docker compose'...
-  #       run: |
-  #         docker compose -f docker-compose.yml -f docker-compose.deploy.yml build
-  #         docker images
-  #     - name: Pushing to docker hub...
-  #       run: |
-  #         docker login -u $HUB_USER -p $HUB_TOKEN
-  #         docker push $HUB_USER/$HUB_REPO_BACKEND:$IMAGE_TAG
-  #         docker push $HUB_USER/$HUB_REPO_FRONTEND:$IMAGE_TAG
-  #         docker logout
-  #         echo "::notice file=main-cicd.yml::Pushed images to Docker Hub with IMAGE_TAG '$IMAGE_TAG'"
-  #     - name: Cleaning up...
-  #       run: |
-  #         docker images -a | grep -e "$HUB_REPO_BACKEND" -e "$HUB_REPO_FRONTEND" | awk '{print $3}' | xargs docker rmi --force
-  #         docker images
+  build-docker-publish-docker-images:
+    needs: [test-ci, export-image-tag]
+    runs-on: [self-hosted, docker]
+    if: ${{ github.ref_name == 'main' }}
+    timeout-minutes: 60
+    env:
+      IMAGE_TAG: ${{ needs.export-image-tag.outputs.image_tag}}
+    steps:
+      - uses: actions/checkout@v3
+        # Checkout the code, not into a container, because all work here is not in a container
+        with:
+          fetch-depth: 50
+          #ensures that the job clones the repo in a new directory elimnating permission issues when cleaning workspace for checkout
+          path: ${{github.workspace}}/${{github.job}}
+      - name: Get all build products (into own folders)
+        uses: actions/download-artifact@v3
+      - name: Move build artifacts into root
+        run: |
+          mv test-build-common/common_build.tar.gz .
+          mv test-build-server/server_build.tar.gz .
+          mv test-build-client/client_build.tar.gz .
+      - name: Printing debug information...
+        run: |
+          echo "IMAGE_TAG = '$IMAGE_TAG'"
+          echo "Files in current folder before building image"
+          ls -al
+      - name: Running 'docker compose'...
+        run: |
+          docker compose -f docker-compose.yml -f docker-compose.deploy.yml build
+          docker images
+      - name: Pushing to docker hub...
+        run: |
+          docker login -u $HUB_USER -p $HUB_TOKEN
+          docker push $HUB_USER/$HUB_REPO_BACKEND:$IMAGE_TAG
+          docker push $HUB_USER/$HUB_REPO_FRONTEND:$IMAGE_TAG
+          docker logout
+          echo "::notice file=main-cicd.yml::Pushed images to Docker Hub with IMAGE_TAG '$IMAGE_TAG'"
+      - name: Cleaning up...
+        run: |
+          docker images -a | grep -e "$HUB_REPO_BACKEND" -e "$HUB_REPO_FRONTEND" | awk '{print $3}' | xargs docker rmi --force
+          docker images
 
   # #   ----------------------------------------------------------------------------
   # #   Deployment and Re-tagging Jobs
@@ -161,41 +167,41 @@ jobs:
   # #     https://docs.github.com/en/actions/using-workflows/reusing-workflows
   # #   ----------------------------------------------------------------------------
   # # Development (dev) server
-  # dev-server-deploy-from-dockerhub:
-  #   needs: [build-docker-publish-docker-images, export-image-tag]
-  #   if: ${{ github.ref_name == 'main' }}
-  #   uses: ./.github/workflows/deploy-from-dockerhub.yml
-  #   with:
-  #     RUNNER_NAME: deploy-development
-  #     DOMAIN: hhahaiti-dev.cmpt.sfu.ca
-  #     IMAGE_TAG: ${{ needs.export-image-tag.outputs.image_tag }}
-  #   secrets: inherit
+  dev-server-deploy-from-dockerhub:
+    needs: [build-docker-publish-docker-images, export-image-tag]
+    if: ${{ github.ref_name == 'main' }}
+    uses: ./.github/workflows/deploy-from-dockerhub.yml
+    with:
+      RUNNER_NAME: deploy-development
+      DOMAIN: hhahaiti-dev.cmpt.sfu.ca
+      IMAGE_TAG: ${{ needs.export-image-tag.outputs.image_tag }}
+    secrets: inherit
 
-  # dev-retag-and-upload-to-dockerhub:
-  #   needs: [build-docker-publish-docker-images, export-image-tag]
-  #   if: ${{ github.ref_name == 'main' }}
-  #   uses: ./.github/workflows/retag-and-upload-dockerhub.yml
-  #   with:
-  #     IMAGE_TAG: ${{ needs.export-image-tag.outputs.image_tag }}
-  #     BRANCH_TAG: dev
-  #   secrets: inherit
+  dev-retag-and-upload-to-dockerhub:
+    needs: [build-docker-publish-docker-images, export-image-tag]
+    if: ${{ github.ref_name == 'main' }}
+    uses: ./.github/workflows/retag-and-upload-dockerhub.yml
+    with:
+      IMAGE_TAG: ${{ needs.export-image-tag.outputs.image_tag }}
+      BRANCH_TAG: dev
+    secrets: inherit
 
   # # Staging (stg) server
-  # staging-server-deploy-from-dockerhub:
-  #   needs: [export-image-tag]
-  #   if: ${{ github.ref_name == 'staging' }}
-  #   uses: ./.github/workflows/deploy-from-dockerhub.yml
-  #   with:
-  #     RUNNER_NAME: deploy-staging
-  #     DOMAIN: hhahaiti-stg.cmpt.sfu.ca
-  #     IMAGE_TAG: ${{ needs.export-image-tag.outputs.image_tag }}
-  #   secrets: inherit
+  staging-server-deploy-from-dockerhub:
+    needs: [export-image-tag]
+    if: ${{ github.ref_name == 'staging' }}
+    uses: ./.github/workflows/deploy-from-dockerhub.yml
+    with:
+      RUNNER_NAME: deploy-staging
+      DOMAIN: hhahaiti-stg.cmpt.sfu.ca
+      IMAGE_TAG: ${{ needs.export-image-tag.outputs.image_tag }}
+    secrets: inherit
 
-  # staging-retag-and-upload-to-dockerhub:
-  #   needs: [export-image-tag]
-  #   if: ${{ github.ref_name == 'staging' }}
-  #   uses: ./.github/workflows/retag-and-upload-dockerhub.yml
-  #   with:
-  #     IMAGE_TAG: ${{ needs.export-image-tag.outputs.image_tag }}
-  #     BRANCH_TAG: stg
-  #   secrets: inherit
+  staging-retag-and-upload-to-dockerhub:
+    needs: [export-image-tag]
+    if: ${{ github.ref_name == 'staging' }}
+    uses: ./.github/workflows/retag-and-upload-dockerhub.yml
+    with:
+      IMAGE_TAG: ${{ needs.export-image-tag.outputs.image_tag }}
+      BRANCH_TAG: stg
+    secrets: inherit

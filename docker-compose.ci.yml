@@ -13,6 +13,7 @@ services:
       RAND_PASSWORD_SEED: 'C@td0g'
       SERVER_PORT: 8000
 
+    # the healthcheck for the test container used to decide if cypress test should start running
     healthcheck:
       test: ['CMD-SHELL', 'curl localhost:3000']
       interval: 2m
@@ -22,20 +23,21 @@ services:
 
     volumes:
       - artifacts-test:/var/artifacts
+    # run container using the following user (set from environment variables)
+    # if ran locally, then the env variables will be ignored by docker since it is not set
     user: ${MY_UID}:${MY_GID}
 
   test_mongodb:
     image: mongo:5.0.14-focal
     ports:
       - 27017:27017
-    logging:
-      driver: none
 
   cypress:
     build: ./client
     depends_on:
       test:
         condition: service_healthy
+    # run container using the following user (set from environment variables)
     user: ${MY_UID}:${MY_GID}
 
     volumes:
