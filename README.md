@@ -444,5 +444,3 @@ contains all the api requests to the database.To send a request to the database 
 run “Step 1. CSRF Token” and “Step 2. Login” requests inside the Authentication folder first. These
 two requests set up the value for the CSRF token variable. This token is required in some requests.
 If you create a new api request, please remember to update this file.
-
-T
