@@ -65,24 +65,6 @@ export const getUserById = async (id: string, history: History): Promise<UserCli
   }
 };
 
-export const getCurrentUser = async (history: History): Promise<UserClientModel> => {
-  const controller = new AbortController();
-  try {
-    const user: UserClientModel = await Api.Get(
-      ENDPOINT_ADMIN_ME,
-      ResponseMessage.getMsgFetchUsersFailed(),
-      history,
-      controller.signal,
-    );
-    return user;
-  } catch (error) {
-    console.error('Error fetching current user:', error);
-    throw error;
-  } finally {
-    controller.abort();
-  }
-};
-
 export const updateUser = async (
   id: string,
   data: AdminUserFormData,

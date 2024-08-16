@@ -54,6 +54,7 @@ const FormField = (props: FormFieldProps) => {
         disabled={props.readOnly}
         style={props.style}
         onBlur={() => setTouched(true)}
+        data-testid="form-field"
       />
       {!props.readOnly && (touched || value !== '') && props.inputState !== true && (
         <div className="invalid-feedback">{props.inputState.message?.[language]}</div>

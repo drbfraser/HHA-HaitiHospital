@@ -20,7 +20,7 @@ const ConfirmationModal = (props: ComfirmationModalProps) => {
   return (
     <Modal show={props.show} onHide={props.onModalCancel}>
       <Modal.Header closeButton>
-        <Modal.Title>{props.title}</Modal.Title>
+        <Modal.Title data-testid="discard-submission-modal">{props.title}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <Container fluid>

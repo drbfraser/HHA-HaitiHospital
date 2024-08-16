@@ -269,7 +269,7 @@ const ReportForm = ({
           </div>
         </div>
         <div className="text-danger">
-          <p>{submitTooltipText}</p>
+          <p data-testid="submit-tooltip-warning">{submitTooltipText}</p>
         </div>
       </form>
     </div>

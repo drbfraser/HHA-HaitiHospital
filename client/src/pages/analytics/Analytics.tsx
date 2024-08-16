@@ -377,7 +377,7 @@ const Analytics = () => {
         <Spinner text="Loading..." size="30px" />
       ) : (
         <div className="w-100 d-flex flex-column mr-auto">
-          <div className="w-100 d-flex flex-row justify-content-between">
+          <div className="w-100 d-flex flex-wrap justify-content-between">
             <div className="d-flex flex-row gap-3" data-testid="select-department-question-button">
               <Button variant="outline-dark" onClick={handleShowQuestionsModal}>
                 {t('analyticsQuestion')}

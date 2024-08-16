@@ -7,7 +7,7 @@ const AuthStateContext = createContext<any>({} as any);
 const AuthDispatchContext = createContext<Dispatch<any>>({} as Dispatch<any>);
 
 export function useAuthState() {
-  const context = useContext<UserJson>(AuthStateContext);
+  const context = useContext(AuthStateContext);
   if (context === undefined) {
     throw new Error('useAuthState must be used within a AuthProvider');
   }
