@@ -1,5 +1,3 @@
-version: '3.9'
-
 services:
   test:
     build: ./
@@ -24,6 +22,7 @@ services:
 
     volumes:
       - artifacts-test:/var/artifacts
+    user: ${MY_UID}:${MY_GID}
 
   test_mongodb:
     image: mongo:5.0.14-focal
@@ -37,6 +36,7 @@ services:
     depends_on:
       test:
         condition: service_healthy
+    user: ${MY_UID}:${MY_GID}
 
     volumes:
       - artifacts-cypress:/var/artifacts

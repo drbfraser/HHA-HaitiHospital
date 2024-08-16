@@ -2,6 +2,8 @@
 
 set -x
 
+whoami
+
 npm run cypress:pretest
 
 npx cypress run

@@ -75,6 +75,8 @@ jobs:
       - name: Spin up containers
         working-directory: ${{github.workspace}}/${{github.job}}
         run: |
+          export MY_UID="$(id -u)"
+          export MY_GID="$(id -g)"
           docker compose -f docker-compose.ci.yml up --build --abort-on-container-exit
 
       - name: Upload artifacts

@@ -13,6 +13,8 @@ echo -e "Running common tests"
 npm -v
 node -v
 
+whoami
+
 cd common
 
 npm ci
