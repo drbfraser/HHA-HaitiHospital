@@ -27,7 +27,6 @@ import { createAnalyticsKey } from 'utils/string';
 import AnalyticsTotal from 'components/analytics/Total';
 import { defaultFromDate, defaultToDate } from 'utils';
 import html2canvas from 'html2canvas';
-import jsPDF from 'jspdf';
 
 export type TimeOptions = {
   from: string;

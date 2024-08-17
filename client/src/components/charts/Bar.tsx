@@ -16,7 +16,6 @@ import {
   translateChartLabel,
   translateTimeCategory,
 } from 'utils/analytics';
-import { useTranslation } from 'react-i18next';
 import { OPACITY_VALUE_MEDIUM } from 'constants/graphColor';
 import { getGraphColors } from 'utils/graphColors';
 
@@ -25,8 +24,6 @@ ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend)
 type BarChartProps = Omit<ChartProps, 'type'>;
 
 const BarChart = ({ analyticsData, questionMap }: BarChartProps) => {
-  const { t } = useTranslation();
-
   const dataSets = prepareDataSetForChart(analyticsData);
   const graphColors = getGraphColors(OPACITY_VALUE_MEDIUM);
 

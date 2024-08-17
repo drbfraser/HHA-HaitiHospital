@@ -1,4 +1,3 @@
-import { QuestionPrompt } from '@hha/common';
 import QuestionCollapse from 'components/collapse/QuestionCollapse';
 import { QuestionMap } from 'pages/analytics/Analytics';
 import { ChangeEvent } from 'react';

@@ -16,7 +16,6 @@ const DbErrorHandler = (e: Error | AxiosError, history: History, toastMsg: strin
     console.log(e.message);
     return;
   }
-
   switch (err.response?.status) {
     case UNAUTHORIZED_CODE: {
       history.push('/unauthorized');
@@ -40,7 +39,6 @@ const DbErrorHandler = (e: Error | AxiosError, history: History, toastMsg: strin
       } else {
         toast.error(`${toastMsg}: Invalid input`);
       }
-
       break;
     }
     case UNPROCCESABLENTITY_CODE: {
@@ -56,5 +54,4 @@ const DbErrorHandler = (e: Error | AxiosError, history: History, toastMsg: strin
   }
   throw new Error(err.response?.data);
 };
-
 export default DbErrorHandler;

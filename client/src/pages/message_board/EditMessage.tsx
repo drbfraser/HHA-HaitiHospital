@@ -3,7 +3,6 @@ import { useCallback, useEffect, useState } from 'react';
 import { History } from 'history';
 import Layout from 'components/layout';
 import MessageForm from 'components/message/MessageForm';
-import i18n from 'i18next';
 import { parseEscapedCharacters } from 'utils/escapeCharacterParser';
 import { useHistory } from 'react-router-dom';
 import { useParams } from 'react-router';
